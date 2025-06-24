@@ -8,3 +8,15 @@ packages = ["maven", "mysql80"]
 localPort = 3306
 externalPort = 3000
 exposeLocalhost = true
+
+[workflows]
+runButton = "Run Spring Boot App"
+
+[[workflows.workflow]]
+name = "Run Spring Boot App"
+author = 44197451
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "mvn spring-boot:run"
