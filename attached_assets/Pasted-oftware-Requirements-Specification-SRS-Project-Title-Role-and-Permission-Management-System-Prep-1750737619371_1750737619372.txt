@@ -1,0 +1,259 @@
+oftware Requirements Specification (SRS)
+
+Project Title: Role and Permission Management System
+
+Prepared For: Internal Development / Stakeholders
+
+Prepared By: [Your Name or Team]
+
+Last Updated: June 23, 2025
+
+1. Introduction
+
+1.1 Purpose
+
+The purpose of this document is to specify the requirements for a Role and Permission Management System. This system will provide robust permission configurations, customizable role creation, user account management, and granular access control.
+
+1.2 Scope
+
+The system will be developed using Spring Boot (Java) and MySQL. It will focus on:
+
+Managing users, roles, and permissions.
+
+Permissions defined in a JSON resource file and imported on application startup.
+
+A hardcoded Super Admin defined in code with fixed credentials.
+
+Backend-only creation and assignment of roles and permissions.
+
+Allowing permission overrides at the user level beyond assigned roles.
+
+1.3 Definitions, Acronyms, Abbreviations
+
+RBAC: Role-Based Access Control
+
+ACL: Access Control List
+
+API: Application Programming Interface
+
+JWT: JSON Web Token
+
+UI: User Interface
+
+2. Overall Description
+
+2.1 Product Perspective
+
+This will be a backend component providing centralized user-role-permission governance. Inspired by Attest system behavior.
+
+2.2 User Classes and Characteristics
+
+Super Admin: Only one super admin exists, hardcoded with username and password. Has full access to create roles, assign permissions, and manage users. This role is not modifiable or deletable from the backend.
+
+Custom Roles: All roles except Super Admin are dynamically created through the backend by the Super Admin. One such default role is Customer, which is assigned automatically when users sign up via the mobile app (e.g., Google Play Store).
+
+Users (Customers and Others):
+
+Users signing up via the mobile app will automatically be assigned the Customer role.
+
+Permissions for the Customer role are loaded from a separate customer-permissions.json file during application startup.
+
+After signup, an activation email is sent with a verification link. Users must verify their email before they can log in.
+
+All users (including Customers) will have access to password reset functionality (Forgot Password).
+
+Admins will have the ability to activate/deactivate any user through toggle controls in the admin dashboard.
+
+2.3 Operating Environment
+
+Backend: Java 17+, Spring Boot 3+
+
+Database: MySQL 8+
+
+Resource Directory: JSON-based permission definitions
+
+2.4 Design and Implementation Constraints
+
+Super Admin credentials stored securely in code and not modifiable via backend APIs.
+
+All permissions must be initialized from a JSON file during application startup.
+
+Application must support role-to-permission and user-to-role-to-permission linking.
+
+3. Functional Requirements
+
+3.1 Permission Management
+
+Load permission list from a structured JSON file under resources/permissions.json
+
+JSON fields for each permission:
+
+id: Unique identifier (UUID or string key)
+
+name: Permission name (e.g., "Create User")
+
+key: Unique key (e.g., "user.create")
+
+description: Detailed description of permission intent
+
+module: Associated module or feature category (e.g., "User Management")
+
+Application startup must check for empty DB and auto-populate these permissions
+
+Total permissions in initial setup: ~50 dummy permissions across modules such as Users, Reports, Dashboard, Contracts, etc.
+
+3.2 Role Management
+
+CRUD Operations:
+
+Create: Super Admin or authorized users can create new roles and assign multiple permissions.
+
+Read: View list of all roles and their associated permissions. Display 20 records per page by default, with options to view 20, 50, or 100 records.
+
+Update: Modify existing role names and update assigned permissions.
+
+Delete: Remove roles that are no longer needed (with constraints if in use).
+
+Export: Export list of roles and their associated data in Excel, CSV, and PDF formats.
+
+CRUD Operations:
+
+Create: Super Admin or authorized users can create new roles and assign multiple permissions.
+
+Read: View list of all roles and their associated permissions.
+
+Update: Modify existing role names and update assigned permissions.
+
+Delete: Remove roles that are no longer needed (with constraints if in use).
+
+Super Admin (hardcoded) or any user with role.create Permission can create a new role
+
+While creating a role:
+
+A list of all available permissions will be shown grouped by module
+
+Permissions can be selected for the role
+
+A role can have multiple permissions and can be modified later by users with edit rights
+
+3.3 User Management
+
+CRUD Operations:
+
+Create: Admin or Super Admin can manually create users through the backend UI.
+
+Read: List all users with role and status filters. Display 20 records per page by default, with options to view 20, 50, or 100 records.
+
+Update: Edit user details, assign/reassign roles, override permissions, or toggle activation.
+
+Delete: Delete or soft-delete users depending on system constraints.
+
+Export: Export list of users and their associated data in Excel, CSV, and PDF formats.
+
+CRUD Operations:
+
+Create: Admin or Super Admin can manually create users through the backend UI.
+
+Read: List all users with role and status filters.
+
+Update: Edit user details, assign/reassign roles, override permissions, or toggle activation.
+
+Delete: Delete or soft-delete users depending on system constraints.
+
+Admin can create new users and assign one or more existing roles
+
+Users who sign up via mobile app (e.g., Google Play Store) will automatically be assigned the Customer role
+
+Upon signup, the system sends an activation email with a verification link
+
+User login is blocked until email verification is completed
+
+All users (including Customers) will have:
+
+Access to Forgot Password (request password reset email)
+
+Option to reset password via verification link
+
+Admin can:
+
+Activate or deactivate users using a toggle
+
+Edit users to assign/reassign roles
+
+Override role permissions per user by:
+
+Adding extra permissions
+
+Removing role-derived permissions
+
+Final user permissions = (Permissions from Role(s)) - (Removed overrides) + (Added overrides)
+
+3.4 Access Control
+
+JWT token used for all secured endpoints
+
+Middleware will enforce permission checks dynamically
+
+Permission granularity: View, Create, Edit, Delete, Download, etc.
+
+Priority is given to overridden user-level permissions
+
+4. Non-Functional Requirements
+
+Security: Role/permission checks on every endpoint; Super Admin credentials must be immutable in backend
+
+Performance: Efficient querying using indexes on user_roles, role_permissions, and user_permission_overrides
+
+Scalability: Designed to accommodate 10,000+ users and 500+ roles/permissions
+
+Maintainability: Permissions managed via JSON; extendable with additional modules
+
+5. Data Requirements
+
+5.1 Database Tables
+
+users
+
+roles
+
+permissions
+
+user_roles
+
+role_permissions
+
+user_permission_overrides
+
+5.2 JSON Permission Template
+
+{
+  "permissions": [
+    {
+      "id": "user.create",
+      "name": "Create User",
+      "description": "Allows creation of new user accounts",
+      "module": "User Management"
+    },
+    {
+      "id": "user.delete",
+      "name": "Delete User",
+      "description": "Allows deletion of existing users",
+      "module": "User Management"
+    },
+    {
+      "id": "report.download",
+      "name": "Download Report",
+      "description": "Allows downloading of system-generated reports",
+      "module": "Reporting"
+    }
+    // ...more permissions
+  ]
+}
+
+6. Appendix
+
+Screenshot references from Attest UI
+
+Sample permissions.json file
+
+End of Document
