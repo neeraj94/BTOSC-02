@@ -1,4 +1,4 @@
-modules = ["java-17"]
+modules = ["java-graalvm22.3", "bash"]
 
 [nix]
 channel = "stable-24_05"
@@ -8,3 +8,19 @@ packages = ["maven", "mysql80"]
 localPort = 3306
 externalPort = 3000
 exposeLocalhost = true
+
+[[ports]]
+localPort = 8080
+externalPort = 80
+
+[workflows]
+runButton = "Run Spring Boot App"
+
+[[workflows.workflow]]
+name = "Run Spring Boot App"
+author = 44197451
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "mvn spring-boot:run"

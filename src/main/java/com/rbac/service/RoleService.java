@@ -1,5 +1,9 @@
 package com.rbac.service;
 
+import com.rbac.exception.ResourceNotFoundException;
+import com.rbac.exception.ResourceAlreadyExistsException;
+import com.rbac.exception.InvalidOperationException;
+
 import com.rbac.dto.role.CreateRoleRequest;
 import com.rbac.dto.role.RoleResponse;
 import com.rbac.entity.Permission;
@@ -28,7 +32,7 @@ public class RoleService {
 
     public RoleResponse createRole(CreateRoleRequest request) {
         if (roleRepository.existsByName(request.getName())) {
-            throw new RuntimeException("Role name already exists!");
+            throw new ResourceAlreadyExistsException("Role with name '" + request.getName() + "' already exists");
         }
 
         Role role = new Role();
@@ -56,11 +60,11 @@ public class RoleService {
                 .orElseThrow(() -> new RuntimeException("Role not found"));
 
         if (role.getIsSystemRole()) {
-            throw new RuntimeException("Cannot modify system roles");
+            throw new InvalidOperationException("Cannot modify system role '" + role.getName() + "'");
         }
 
         if (!role.getName().equals(request.getName()) && roleRepository.existsByName(request.getName())) {
-            throw new RuntimeException("Role name already exists!");
+            throw new ResourceAlreadyExistsException("Role with name '" + request.getName() + "' already exists");
         }
 
         role.setName(request.getName());
@@ -109,7 +113,7 @@ public class RoleService {
                 .orElseThrow(() -> new RuntimeException("Role not found"));
 
         if (role.getIsSystemRole()) {
-            throw new RuntimeException("Cannot delete system roles");
+            throw new InvalidOperationException("Cannot delete system role '" + role.getName() + "'");
         }
 
         if (!role.getUsers().isEmpty()) {

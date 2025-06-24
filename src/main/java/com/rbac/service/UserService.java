@@ -1,5 +1,9 @@
 package com.rbac.service;
 
+import com.rbac.exception.ResourceNotFoundException;
+import com.rbac.exception.ResourceAlreadyExistsException;
+import com.rbac.exception.InvalidOperationException;
+
 import com.rbac.dto.user.CreateUserRequest;
 import com.rbac.dto.user.UpdateUserRequest;
 import com.rbac.dto.user.UserResponse;
@@ -35,12 +39,14 @@ public class UserService {
     private EmailService emailService;
 
     public UserResponse createUser(CreateUserRequest request) {
+        // Check if username already exists
         if (userRepository.existsByUsername(request.getUsername())) {
-            throw new RuntimeException("Username is already taken!");
+            throw new ResourceAlreadyExistsException("Username '" + request.getUsername() + "' is already taken");
         }
 
+        // Check if email already exists
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email is already in use!");
+            throw new ResourceAlreadyExistsException("Email '" + request.getEmail() + "' is already registered");
         }
 
         User user = new User();
@@ -65,7 +71,7 @@ public class UserService {
         }
 
         User savedUser = userRepository.save(user);
-        
+
         // Send verification email
         emailService.sendVerificationEmail(savedUser.getEmail(), savedUser.getEmailVerificationToken());
 
@@ -76,18 +82,22 @@ public class UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if (request.getUsername() != null && !request.getUsername().equals(user.getUsername())) {
-            if (userRepository.existsByUsername(request.getUsername())) {
-                throw new RuntimeException("Username is already taken!");
+        if (request.getUsername() != null && !request.getUsername().trim().isEmpty()) {
+            // Check if new username conflicts with existing user (but not the current user)
+            if (!user.getUsername().equals(request.getUsername().trim()) && 
+                userRepository.existsByUsername(request.getUsername().trim())) {
+                throw new ResourceAlreadyExistsException("Username '" + request.getUsername().trim() + "' is already taken");
             }
-            user.setUsername(request.getUsername());
+            user.setUsername(request.getUsername().trim());
         }
 
-        if (request.getEmail() != null && !request.getEmail().equals(user.getEmail())) {
-            if (userRepository.existsByEmail(request.getEmail())) {
-                throw new RuntimeException("Email is already in use!");
+        if (request.getEmail() != null && !request.getEmail().trim().isEmpty()) {
+            // Check if new email conflicts with existing user (but not the current user)
+            if (!user.getEmail().equals(request.getEmail().trim().toLowerCase()) && 
+                userRepository.existsByEmail(request.getEmail().trim().toLowerCase())) {
+                throw new ResourceAlreadyExistsException("Email '" + request.getEmail().trim().toLowerCase() + "' is already registered");
             }
-            user.setEmail(request.getEmail());
+            user.setEmail(request.getEmail().trim().toLowerCase());
         }
 
         if (request.getFirstName() != null) {
@@ -150,7 +160,7 @@ public class UserService {
     public void verifyEmail(String token) {
         User user = userRepository.findByEmailVerificationToken(token)
                 .orElseThrow(() -> new RuntimeException("Invalid verification token"));
-        
+
         user.setEmailVerified(true);
         user.setEmailVerificationToken(null);
         userRepository.save(user);
@@ -159,23 +169,23 @@ public class UserService {
     public void requestPasswordReset(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
-        
+
         String resetToken = UUID.randomUUID().toString();
         user.setPasswordResetToken(resetToken);
         user.setPasswordResetTokenExpiry(LocalDateTime.now().plusHours(24));
         userRepository.save(user);
-        
+
         emailService.sendPasswordResetEmail(email, resetToken);
     }
 
     public void resetPassword(String token, String newPassword) {
         User user = userRepository.findByPasswordResetToken(token)
                 .orElseThrow(() -> new RuntimeException("Invalid reset token"));
-        
+
         if (user.getPasswordResetTokenExpiry().isBefore(LocalDateTime.now())) {
             throw new RuntimeException("Reset token has expired");
         }
-        
+
         user.setPassword(passwordEncoder.encode(newPassword));
         user.setPasswordResetToken(null);
         user.setPasswordResetTokenExpiry(null);

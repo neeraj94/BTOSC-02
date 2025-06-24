@@ -1,5 +1,9 @@
 package com.rbac.service;
 
+import com.rbac.exception.ResourceNotFoundException;
+import com.rbac.exception.ResourceAlreadyExistsException;
+import com.rbac.exception.InvalidOperationException;
+
 import com.rbac.entity.Permission;
 import com.rbac.entity.Role;
 import com.rbac.entity.User;
