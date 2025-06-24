@@ -1,0 +1,5 @@
+modules = ["java-17"]
+
+[nix]
+channel = "stable-24_05"
+packages = ["maven", "mysql80"]

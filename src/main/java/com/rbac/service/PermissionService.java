@@ -1,0 +1,99 @@
+package com.rbac.service;
+
+import com.rbac.entity.Permission;
+import com.rbac.entity.Role;
+import com.rbac.entity.User;
+import com.rbac.entity.UserPermissionOverride;
+import com.rbac.repository.PermissionRepository;
+import com.rbac.repository.UserPermissionOverrideRepository;
+import com.rbac.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+@Service
+@Transactional
+public class PermissionService {
+    @Autowired
+    private PermissionRepository permissionRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private UserPermissionOverrideRepository userPermissionOverrideRepository;
+
+    public List<Permission> getAllPermissions() {
+        return permissionRepository.findAll();
+    }
+
+    public Page<Permission> getPermissionsWithFilters(String module, String name, Pageable pageable) {
+        return permissionRepository.findWithFilters(module, name, pageable);
+    }
+
+    public List<String> getAllModules() {
+        return permissionRepository.findAllModules();
+    }
+
+    public Map<String, List<Permission>> getPermissionsGroupedByModule() {
+        List<Permission> permissions = permissionRepository.findAll();
+        return permissions.stream()
+                .collect(Collectors.groupingBy(Permission::getModule));
+    }
+
+    public List<String> getUserEffectivePermissions(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Get permissions from roles
+        Set<String> rolePermissions = user.getRoles().stream()
+                .flatMap(role -> role.getPermissions().stream())
+                .map(Permission::getPermissionKey)
+                .collect(Collectors.toSet());
+
+        // Get user permission overrides
+        List<UserPermissionOverride> overrides = userPermissionOverrideRepository.findByUserId(userId);
+        
+        Set<String> effectivePermissions = new HashSet<>(rolePermissions);
+
+        for (UserPermissionOverride override : overrides) {
+            String permissionKey = override.getPermission().getPermissionKey();
+            
+            if (override.getOverrideType() == UserPermissionOverride.OverrideType.GRANT) {
+                effectivePermissions.add(permissionKey);
+            } else if (override.getOverrideType() == UserPermissionOverride.OverrideType.DENY) {
+                effectivePermissions.remove(permissionKey);
+            }
+        }
+
+        return new ArrayList<>(effectivePermissions);
+    }
+
+    public void setUserPermissionOverrides(Long userId, List<UserPermissionOverride> overrides) {
+        // Remove existing overrides
+        userPermissionOverrideRepository.deleteByUserId(userId);
+
+        // Add new overrides
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        for (UserPermissionOverride override : overrides) {
+            override.setUser(user);
+            userPermissionOverrideRepository.save(override);
+        }
+    }
+
+    public List<UserPermissionOverride> getUserPermissionOverrides(Long userId) {
+        return userPermissionOverrideRepository.findByUserId(userId);
+    }
+
+    public boolean hasPermission(Long userId, String permissionKey) {
+        List<String> userPermissions = getUserEffectivePermissions(userId);
+        return userPermissions.contains(permissionKey);
+    }
+}

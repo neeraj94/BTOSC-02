@@ -1,0 +1,28 @@
+{
+  "permissions": [
+    {
+      "id": "dashboard.view",
+      "name": "View Dashboard",
+      "description": "Allows access to customer dashboard",
+      "module": "Dashboard"
+    },
+    {
+      "id": "contract.read",
+      "name": "View Contracts",
+      "description": "Allows viewing own contracts",
+      "module": "Contract Management"
+    },
+    {
+      "id": "support.view",
+      "name": "View Support Tickets",
+      "description": "Allows viewing own support tickets",
+      "module": "Customer Support"
+    },
+    {
+      "id": "notification.view",
+      "name": "View Notifications",
+      "description": "Allows viewing own notifications",
+      "module": "Communication"
+    }
+  ]
+}
