@@ -9,6 +9,10 @@ localPort = 3306
 externalPort = 3000
 exposeLocalhost = true
 
+[[ports]]
+localPort = 8080
+externalPort = 80
+
 [workflows]
 runButton = "Run Spring Boot App"
 
