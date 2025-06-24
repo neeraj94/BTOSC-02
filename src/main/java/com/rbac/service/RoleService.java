@@ -1,5 +1,9 @@
 package com.rbac.service;
 
+import com.rbac.exception.ResourceNotFoundException;
+import com.rbac.exception.ResourceAlreadyExistsException;
+import com.rbac.exception.InvalidOperationException;
+
 import com.rbac.dto.role.CreateRoleRequest;
 import com.rbac.dto.role.RoleResponse;
 import com.rbac.entity.Permission;

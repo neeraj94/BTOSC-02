@@ -1,5 +1,9 @@
 package com.rbac.service;
 
+import com.rbac.exception.ResourceNotFoundException;
+import com.rbac.exception.ResourceAlreadyExistsException;
+import com.rbac.exception.InvalidOperationException;
+
 import com.rbac.dto.user.CreateUserRequest;
 import com.rbac.dto.user.UpdateUserRequest;
 import com.rbac.dto.user.UserResponse;
