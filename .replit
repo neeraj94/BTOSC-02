@@ -3,3 +3,8 @@ modules = ["java-17"]
 [nix]
 channel = "stable-24_05"
 packages = ["maven", "mysql80"]
+
+[[ports]]
+localPort = 3306
+externalPort = 3000
+exposeLocalhost = true
