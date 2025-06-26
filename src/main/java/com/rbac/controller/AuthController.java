@@ -17,11 +17,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import com.rbac.model.User;
-import com.rbac.model.Role;
+import com.rbac.entity.User;
+import com.rbac.entity.Role;
 import com.rbac.repository.UserRepository;
-
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
