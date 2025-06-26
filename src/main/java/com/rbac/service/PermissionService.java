@@ -136,3 +136,64 @@ public class PermissionService {
 
         return new ArrayList<>(availableModules);
     }
+
+    public Map<String, List<String>> getUserDashboardModulesWithPermissions(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Get permissions from roles
+        Set<String> rolePermissionKeys = user.getRoles().stream()
+                .flatMap(role -> role.getPermissions().stream())
+                .map(Permission::getPermissionKey)
+                .collect(Collectors.toSet());
+
+        // Get user permission overrides
+        List<UserPermissionOverride> overrides = userPermissionOverrideRepository.findByUserId(userId);
+        
+        Set<String> effectivePermissionKeys = new HashSet<>(rolePermissionKeys);
+
+        for (UserPermissionOverride override : overrides) {
+            String permissionKey = override.getPermission().getPermissionKey();
+            
+            if (override.getOverrideType() == UserPermissionOverride.OverrideType.GRANT) {
+                effectivePermissionKeys.add(permissionKey);
+            } else if (override.getOverrideType() == UserPermissionOverride.OverrideType.DENY) {
+                effectivePermissionKeys.remove(permissionKey);
+            }
+        }
+
+        // Get permissions for effective permission keys and group by module
+        List<Permission> allPermissions = permissionRepository.findAll();
+        Map<String, List<String>> modulePermissions = allPermissions.stream()
+                .filter(permission -> effectivePermissionKeys.contains(permission.getPermissionKey()))
+                .filter(permission -> permission.getModule() != null && !permission.getModule().trim().isEmpty())
+                .collect(Collectors.groupingBy(
+                    Permission::getModule,
+                    Collectors.mapping(Permission::getPermissionKey, Collectors.toList())
+                ));
+
+        return modulePermissions;
+    }
+
+    public void addUserPermissionOverrides(Long userId, List<UserPermissionOverride> newOverrides) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        for (UserPermissionOverride override : newOverrides) {
+            override.setUser(user);
+            
+            // Check if override already exists for this permission
+            Optional<UserPermissionOverride> existingOverride = userPermissionOverrideRepository
+                    .findByUserIdAndPermissionId(userId, override.getPermission().getId());
+            
+            if (existingOverride.isPresent()) {
+                // Update existing override
+                existingOverride.get().setOverrideType(override.getOverrideType());
+                userPermissionOverrideRepository.save(existingOverride.get());
+            } else {
+                // Create new override
+                userPermissionOverrideRepository.save(override);
+            }
+        }
+    }
+}

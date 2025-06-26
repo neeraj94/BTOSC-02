@@ -52,10 +52,13 @@ public class AuthController {
         UserPrincipal userDetails = (UserPrincipal) authentication.getPrincipal();
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
+                .filter(authority -> authority.startsWith("ROLE_"))
+                .map(authority -> authority.substring(5)) // Remove "ROLE_" prefix
                 .collect(Collectors.toList());
 
         List<String> permissions = permissionService.getUserEffectivePermissions(userDetails.getId());
         List<String> dashboardModules = permissionService.getUserDashboardModules(userDetails.getId());
+        Map<String, List<String>> dashboardModulesWithPermissions = permissionService.getUserDashboardModulesWithPermissions(userDetails.getId());
 
         JwtResponse jwtResponse = new JwtResponse(jwt,
                 userDetails.getId(),
@@ -63,7 +66,8 @@ public class AuthController {
                 userDetails.getEmail(),
                 roles,
                 permissions,
-                dashboardModules);
+                dashboardModules,
+                dashboardModulesWithPermissions);
 
         return ResponseEntity.ok(ApiResponse.success("Login successful", jwtResponse));
     }

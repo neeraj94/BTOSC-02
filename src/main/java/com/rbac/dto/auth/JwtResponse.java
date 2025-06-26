@@ -1,6 +1,7 @@
 package com.rbac.dto.auth;
 
 import java.util.List;
+import java.util.Map;
 
 public class JwtResponse {
     private String token;
@@ -11,8 +12,9 @@ public class JwtResponse {
     private List<String> roles;
     private List<String> permissions;
     private List<String> dashboardModules;
+    private Map<String, List<String>> dashboardModulesWithPermissions;
 
-    public JwtResponse(String accessToken, Long id, String username, String email, List<String> roles, List<String> permissions, List<String> dashboardModules) {
+    public JwtResponse(String accessToken, Long id, String username, String email, List<String> roles, List<String> permissions, List<String> dashboardModules, Map<String, List<String>> dashboardModulesWithPermissions) {
         this.token = accessToken;
         this.type = "Bearer";
         this.id = id;
@@ -21,6 +23,7 @@ public class JwtResponse {
         this.roles = roles;
         this.permissions = permissions;
         this.dashboardModules = dashboardModules;
+        this.dashboardModulesWithPermissions = dashboardModulesWithPermissions;
     }
 
     public String getAccessToken() { return token; }
@@ -55,5 +58,13 @@ public class JwtResponse {
 
     public void setDashboardModules(List<String> dashboardModules) {
         this.dashboardModules = dashboardModules;
+    }
+
+    public Map<String, List<String>> getDashboardModulesWithPermissions() {
+        return dashboardModulesWithPermissions;
+    }
+
+    public void setDashboardModulesWithPermissions(Map<String, List<String>> dashboardModulesWithPermissions) {
+        this.dashboardModulesWithPermissions = dashboardModulesWithPermissions;
     }
 }

@@ -96,23 +96,21 @@ public class PermissionController {
     }
 
     @PostMapping("/user/overrides")
-    @Operation(summary = "Set user permission overrides", description = "Set permission overrides for a user")
-    @PreAuthorize("hasAuthority('permission.assign')")
-    public ResponseEntity<ApiResponse<Object>> setUserPermissionOverrides(@Valid @RequestBody UserPermissionOverrideRequest request) {
-        List<UserPermissionOverride> overrides = request.getOverrides().stream()
-                .map(override -> {
-                    UserPermissionOverride upo = new UserPermissionOverride();
-                    Permission permission = permissionRepository.findById(override.getPermissionId())
-                            .orElseThrow(() -> new RuntimeException("Permission not found"));
-                    upo.setPermission(permission);
-                    upo.setOverrideType(override.getOverrideType());
-                    return upo;
-                })
-                .collect(Collectors.toList());
+    @Operation(summary = "Set user permission overrides", description = "Set permission overrides for a specific user")
+    public ResponseEntity<ApiResponse<Object>> setUserPermissionOverrides(
+            @RequestParam Long userId,
+            @RequestBody List<UserPermissionOverride> overrides) {
+        permissionService.setUserPermissionOverrides(userId, overrides);
+        return ResponseEntity.ok(ApiResponse.success("User permission overrides set successfully"));
+    }
 
-        permissionService.setUserPermissionOverrides(request.getUserId(), overrides);
-
-        return ResponseEntity.ok(ApiResponse.success("User permission overrides updated successfully"));
+    @PostMapping("/user/overrides/add")
+    @Operation(summary = "Add user permission overrides", description = "Add permission overrides for a specific user (accumulative)")
+    public ResponseEntity<ApiResponse<Object>> addUserPermissionOverrides(
+            @RequestParam Long userId,
+            @RequestBody List<UserPermissionOverride> overrides) {
+        permissionService.addUserPermissionOverrides(userId, overrides);
+        return ResponseEntity.ok(ApiResponse.success("User permission overrides added successfully"));
     }
 
     @GetMapping("/check/{userId}/{permissionKey}")
