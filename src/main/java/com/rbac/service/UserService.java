@@ -117,6 +117,11 @@ public class UserService {
 
         // Update roles
         if (request.getRoleIds() != null) {
+            // Clear existing permission overrides BEFORE updating roles
+            userPermissionOverrideRepository.deleteByUserId(userId);
+            // Force flush to ensure deletion happens immediately
+            userPermissionOverrideRepository.flush();
+            
             Set<Role> roles = new HashSet<>();
             for (Long roleId : request.getRoleIds()) {
                 Role role = roleRepository.findById(roleId)
@@ -124,9 +129,6 @@ public class UserService {
                 roles.add(role);
             }
             user.setRoles(roles);
-            
-            // Clear existing permission overrides when roles are updated
-            userPermissionOverrideRepository.deleteByUserId(userId);
         }
 
         User updatedUser = userRepository.save(user);

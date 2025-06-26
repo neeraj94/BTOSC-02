@@ -17,7 +17,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import com.rbac.model.User;
+import com.rbac.model.Role;
+import com.rbac.repository.UserRepository;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -39,6 +43,9 @@ public class AuthController {
     @Autowired
     PermissionService permissionService;
 
+    @Autowired
+    UserRepository userRepository;
+
     @PostMapping("/signin")
     @Operation(summary = "User login", description = "Authenticate user and return JWT token")
     public ResponseEntity<ApiResponse<JwtResponse>> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -57,6 +64,14 @@ public class AuthController {
                 .map(authority -> authority.substring(5)) // Remove "ROLE_" prefix
                 .collect(Collectors.toList());
 
+        // Get user entity to extract role names
+        User user = userRepository.findByUsername(loginRequest.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<String> roleNames = user.getRoles().stream()
+                .map(Role::getName)
+                .collect(Collectors.toList());
+
         List<String> permissions = permissionService.getUserEffectivePermissions(userDetails.getId());
         List<String> dashboardModules = permissionService.getUserDashboardModules(userDetails.getId());
         Map<String, List<String>> dashboardModulesWithPermissions = permissionService.getUserDashboardModulesWithPermissions(userDetails.getId());
@@ -65,7 +80,7 @@ public class AuthController {
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
-                roles,
+                roleNames,
                 permissions,
                 dashboardModules,
                 dashboardModulesWithPermissions);
