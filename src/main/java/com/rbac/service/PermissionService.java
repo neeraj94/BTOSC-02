@@ -78,7 +78,7 @@ public class PermissionService {
         return new ArrayList<>(effectivePermissions);
     }
 
-    public void setUserPermissionOverrides(Long userId, List<UserPermissionOverride> overrides) {
+    public void setUserPermissionOverrides(Long userId, List<com.rbac.dto.permission.UserPermissionOverrideRequest> overrideRequests) {
         // Remove existing overrides
         userPermissionOverrideRepository.deleteByUserId(userId);
 
@@ -86,8 +86,15 @@ public class PermissionService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        for (UserPermissionOverride override : overrides) {
+        for (com.rbac.dto.permission.UserPermissionOverrideRequest request : overrideRequests) {
+            Permission permission = permissionRepository.findById(request.getPermissionId())
+                    .orElseThrow(() -> new RuntimeException("Permission not found with id: " + request.getPermissionId()));
+            
+            UserPermissionOverride override = new UserPermissionOverride();
             override.setUser(user);
+            override.setPermission(permission);
+            override.setOverrideType(request.getOverrideType());
+            
             userPermissionOverrideRepository.save(override);
         }
     }
@@ -175,23 +182,28 @@ public class PermissionService {
         return modulePermissions;
     }
 
-    public void addUserPermissionOverrides(Long userId, List<UserPermissionOverride> newOverrides) {
+    public void addUserPermissionOverrides(Long userId, List<com.rbac.dto.permission.UserPermissionOverrideRequest> overrideRequests) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        for (UserPermissionOverride override : newOverrides) {
-            override.setUser(user);
+        for (com.rbac.dto.permission.UserPermissionOverrideRequest request : overrideRequests) {
+            Permission permission = permissionRepository.findById(request.getPermissionId())
+                    .orElseThrow(() -> new RuntimeException("Permission not found with id: " + request.getPermissionId()));
             
             // Check if override already exists for this permission
             Optional<UserPermissionOverride> existingOverride = userPermissionOverrideRepository
-                    .findByUserIdAndPermissionId(userId, override.getPermission().getId());
+                    .findByUserIdAndPermissionId(userId, request.getPermissionId());
             
             if (existingOverride.isPresent()) {
                 // Update existing override
-                existingOverride.get().setOverrideType(override.getOverrideType());
+                existingOverride.get().setOverrideType(request.getOverrideType());
                 userPermissionOverrideRepository.save(existingOverride.get());
             } else {
                 // Create new override
+                UserPermissionOverride override = new UserPermissionOverride();
+                override.setUser(user);
+                override.setPermission(permission);
+                override.setOverrideType(request.getOverrideType());
                 userPermissionOverrideRepository.save(override);
             }
         }

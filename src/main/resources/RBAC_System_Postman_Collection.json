@@ -1211,7 +1211,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"success\": true,\n    \"message\": \"User permission overrides retrieved successfully\",\n    \"data\": [\n        {\n            \"id\": 1,\n            \"userId\": 1,\n            \"permissionId\": 5,\n            \"overrideType\": \"GRANT\",\n            \"createdAt\": \"2024-01-01T12:00:00Z\",\n            \"permission\": {\n                \"id\": 5,\n                \"permissionKey\": \"user.export\",\n                \"name\": \"Export Users\",\n                \"description\": \"Allows exporting user data\",\n                \"module\": \"User Management\"\n            }\n        }\n    ]\n}"
+							"body": "{\n    \"success\": true,\n    \"message\": \"User permission overrides retrieved successfully\",\n    \"data\": [\n        {\n            \"id\": 1,\n            \"overrideType\": \"GRANT\",\n            \"user\": {\n                \"id\": 1,\n                \"username\": \"admin\",\n                \"email\": \"admin@example.com\",\n                \"firstName\": \"Admin\",\n                \"lastName\": \"User\"\n            },\n            \"permission\": {\n                \"id\": 1,\n                \"permissionKey\": \"user.create\",\n                \"name\": \"Create Users\",\n                \"description\": \"Allows creating new users\",\n                \"module\": \"User Management\"\n            }\n        },\n        {\n            \"id\": 2,\n            \"overrideType\": \"DENY\",\n            \"user\": {\n                \"id\": 1,\n                \"username\": \"admin\",\n                \"email\": \"admin@example.com\",\n                \"firstName\": \"Admin\",\n                \"lastName\": \"User\"\n            },\n            \"permission\": {\n                \"id\": 2,\n                \"permissionKey\": \"user.delete\",\n                \"name\": \"Delete Users\",\n                \"description\": \"Allows deleting users\",\n                \"module\": \"User Management\"\n            }\n        }\n    ]\n}"
 						}
 					]
 				},
@@ -1237,7 +1237,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "[\n    {\n        \"permissionId\": 5,\n        \"overrideType\": \"GRANT\"\n    },\n    {\n        \"permissionId\": 6,\n        \"overrideType\": \"DENY\"\n    }\n]"
+							"raw": "[\n    {\n        \"permissionId\": 1,\n        \"overrideType\": \"GRANT\"\n    },\n    {\n        \"permissionId\": 2,\n        \"overrideType\": \"DENY\"\n    }\n]"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/api/permissions/user/overrides?userId={{userId}}",
@@ -1314,7 +1314,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "[\n    {\n        \"permissionId\": 7,\n        \"overrideType\": \"GRANT\"\n    },\n    {\n        \"permissionId\": 8,\n        \"overrideType\": \"DENY\"\n    }\n]"
+							"raw": "[\n    {\n        \"permissionId\": 3,\n        \"overrideType\": \"GRANT\"\n    },\n    {\n        \"permissionId\": 4,\n        \"overrideType\": \"DENY\"\n    }\n]"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/api/permissions/user/overrides/add?userId={{userId}}",

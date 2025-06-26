@@ -99,7 +99,7 @@ public class PermissionController {
     @Operation(summary = "Set user permission overrides", description = "Set permission overrides for a specific user")
     public ResponseEntity<ApiResponse<Object>> setUserPermissionOverrides(
             @RequestParam Long userId,
-            @RequestBody List<UserPermissionOverride> overrides) {
+            @RequestBody List<UserPermissionOverrideRequest> overrides) {
         permissionService.setUserPermissionOverrides(userId, overrides);
         return ResponseEntity.ok(ApiResponse.success("User permission overrides set successfully"));
     }
@@ -108,7 +108,7 @@ public class PermissionController {
     @Operation(summary = "Add user permission overrides", description = "Add permission overrides for a specific user (accumulative)")
     public ResponseEntity<ApiResponse<Object>> addUserPermissionOverrides(
             @RequestParam Long userId,
-            @RequestBody List<UserPermissionOverride> overrides) {
+            @RequestBody List<UserPermissionOverrideRequest> overrides) {
         permissionService.addUserPermissionOverrides(userId, overrides);
         return ResponseEntity.ok(ApiResponse.success("User permission overrides added successfully"));
     }
