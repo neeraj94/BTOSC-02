@@ -10,14 +10,17 @@ public class JwtResponse {
     private String email;
     private List<String> roles;
     private List<String> permissions;
+    private List<String> dashboardModules;
 
-    public JwtResponse(String accessToken, Long id, String username, String email, List<String> roles, List<String> permissions) {
+    public JwtResponse(String accessToken, Long id, String username, String email, List<String> roles, List<String> permissions, List<String> dashboardModules) {
         this.token = accessToken;
+        this.type = "Bearer";
         this.id = id;
         this.username = username;
         this.email = email;
         this.roles = roles;
         this.permissions = permissions;
+        this.dashboardModules = dashboardModules;
     }
 
     public String getAccessToken() { return token; }
@@ -38,6 +41,19 @@ public class JwtResponse {
     public List<String> getRoles() { return roles; }
     public void setRoles(List<String> roles) { this.roles = roles; }
 
-    public List<String> getPermissions() { return permissions; }
-    public void setPermissions(List<String> permissions) { this.permissions = permissions; }
+    public List<String> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(List<String> permissions) {
+        this.permissions = permissions;
+    }
+
+    public List<String> getDashboardModules() {
+        return dashboardModules;
+    }
+
+    public void setDashboardModules(List<String> dashboardModules) {
+        this.dashboardModules = dashboardModules;
+    }
 }

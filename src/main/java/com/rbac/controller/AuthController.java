@@ -55,13 +55,15 @@ public class AuthController {
                 .collect(Collectors.toList());
 
         List<String> permissions = permissionService.getUserEffectivePermissions(userDetails.getId());
+        List<String> dashboardModules = permissionService.getUserDashboardModules(userDetails.getId());
 
         JwtResponse jwtResponse = new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
                 roles,
-                permissions);
+                permissions,
+                dashboardModules);
 
         return ResponseEntity.ok(ApiResponse.success("Login successful", jwtResponse));
     }

@@ -100,4 +100,39 @@ public class PermissionService {
         List<String> userPermissions = getUserEffectivePermissions(userId);
         return userPermissions.contains(permissionKey);
     }
-}
+
+    public List<String> getUserDashboardModules(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Get permissions from roles
+        Set<String> rolePermissionKeys = user.getRoles().stream()
+                .flatMap(role -> role.getPermissions().stream())
+                .map(Permission::getPermissionKey)
+                .collect(Collectors.toSet());
+
+        // Get user permission overrides
+        List<UserPermissionOverride> overrides = userPermissionOverrideRepository.findByUserId(userId);
+        
+        Set<String> effectivePermissionKeys = new HashSet<>(rolePermissionKeys);
+
+        for (UserPermissionOverride override : overrides) {
+            String permissionKey = override.getPermission().getPermissionKey();
+            
+            if (override.getOverrideType() == UserPermissionOverride.OverrideType.GRANT) {
+                effectivePermissionKeys.add(permissionKey);
+            } else if (override.getOverrideType() == UserPermissionOverride.OverrideType.DENY) {
+                effectivePermissionKeys.remove(permissionKey);
+            }
+        }
+
+        // Get modules for effective permissions
+        List<Permission> allPermissions = permissionRepository.findAll();
+        Set<String> availableModules = allPermissions.stream()
+                .filter(permission -> effectivePermissionKeys.contains(permission.getPermissionKey()))
+                .map(Permission::getModule)
+                .filter(module -> module != null && !module.trim().isEmpty())
+                .collect(Collectors.toSet());
+
+        return new ArrayList<>(availableModules);
+    }

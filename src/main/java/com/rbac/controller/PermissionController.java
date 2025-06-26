@@ -1,4 +1,3 @@
-
 package com.rbac.controller;
 
 import com.rbac.dto.common.ApiResponse;
@@ -47,11 +46,11 @@ public class PermissionController {
             @RequestParam(defaultValue = "asc") String sortDir,
             @RequestParam(required = false) String module,
             @RequestParam(required = false) String name) {
-        
+
         Sort sort = sortDir.equalsIgnoreCase("desc") ? 
                 Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
         Pageable pageable = PageRequest.of(page, size, sort);
-        
+
         Page<PermissionResponse> permissions = permissionService.getPermissionsWithFilters(module, name, pageable)
                 .map(PermissionResponse::new);
         return ResponseEntity.ok(ApiResponse.success(permissions));
@@ -110,18 +109,27 @@ public class PermissionController {
                     return upo;
                 })
                 .collect(Collectors.toList());
-        
+
         permissionService.setUserPermissionOverrides(request.getUserId(), overrides);
-        
+
         return ResponseEntity.ok(ApiResponse.success("User permission overrides updated successfully"));
     }
 
     @GetMapping("/check/{userId}/{permissionKey}")
     @Operation(summary = "Check user permission", description = "Check if user has specific permission")
     @PreAuthorize("hasAuthority('permission.read')")
-    public ResponseEntity<ApiResponse<Map<String, Boolean>>> checkUserPermission(@PathVariable Long userId, @PathVariable String permissionKey) {
+    public ResponseEntity<ApiResponse<Boolean>> checkUserPermission(
+            @PathVariable Long userId,
+            @PathVariable String permissionKey) {
         boolean hasPermission = permissionService.hasPermission(userId, permissionKey);
-        Map<String, Boolean> result = Map.of("hasPermission", hasPermission);
-        return ResponseEntity.ok(ApiResponse.success(result));
+        return ResponseEntity.ok(ApiResponse.success("Permission check completed", hasPermission));
+    }
+
+    @GetMapping("/user/{userId}/dashboard-modules")
+    @Operation(summary = "Get user dashboard modules", description = "Get available dashboard modules for user based on permissions")
+    @PreAuthorize("hasAuthority('permission.read') or #userId == authentication.principal.id")
+    public ResponseEntity<ApiResponse<List<String>>> getUserDashboardModules(@PathVariable Long userId) {
+        List<String> modules = permissionService.getUserDashboardModules(userId);
+        return ResponseEntity.ok(ApiResponse.success("Dashboard modules retrieved successfully", modules));
     }
 }
