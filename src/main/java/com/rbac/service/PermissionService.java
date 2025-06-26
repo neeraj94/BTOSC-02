@@ -182,9 +182,13 @@ public class PermissionService {
         return modulePermissions;
     }
 
-    public void addUserPermissionOverrides(Long userId, List<com.rbac.dto.permission.UserPermissionOverrideRequest> overrideRequests) {
+    public Map<String, Object> addUserPermissionOverrides(Long userId, List<com.rbac.dto.permission.UserPermissionOverrideRequest> overrideRequests) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
+        int newOverrides = 0;
+        int updatedOverrides = 0;
+        int duplicateOverrides = 0;
 
         for (com.rbac.dto.permission.UserPermissionOverrideRequest request : overrideRequests) {
             Permission permission = permissionRepository.findById(request.getPermissionId())
@@ -195,9 +199,15 @@ public class PermissionService {
                     .findByUserIdAndPermissionId(userId, request.getPermissionId());
             
             if (existingOverride.isPresent()) {
-                // Update existing override
-                existingOverride.get().setOverrideType(request.getOverrideType());
-                userPermissionOverrideRepository.save(existingOverride.get());
+                // Check if the override type is the same
+                if (existingOverride.get().getOverrideType() == request.getOverrideType()) {
+                    duplicateOverrides++;
+                } else {
+                    // Update existing override with different type
+                    existingOverride.get().setOverrideType(request.getOverrideType());
+                    userPermissionOverrideRepository.save(existingOverride.get());
+                    updatedOverrides++;
+                }
             } else {
                 // Create new override
                 UserPermissionOverride override = new UserPermissionOverride();
@@ -205,7 +215,27 @@ public class PermissionService {
                 override.setPermission(permission);
                 override.setOverrideType(request.getOverrideType());
                 userPermissionOverrideRepository.save(override);
+                newOverrides++;
             }
         }
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("newOverrides", newOverrides);
+        result.put("updatedOverrides", updatedOverrides);
+        result.put("duplicateOverrides", duplicateOverrides);
+        
+        String message;
+        if (duplicateOverrides > 0 && newOverrides == 0 && updatedOverrides == 0) {
+            message = "All permission overrides already exist with the same type";
+        } else if (duplicateOverrides > 0) {
+            message = String.format("Added %d new, updated %d existing, %d duplicate overrides found", 
+                newOverrides, updatedOverrides, duplicateOverrides);
+        } else {
+            message = String.format("Added %d new and updated %d existing permission overrides", 
+                newOverrides, updatedOverrides);
+        }
+        result.put("message", message);
+        
+        return result;
     }
 }

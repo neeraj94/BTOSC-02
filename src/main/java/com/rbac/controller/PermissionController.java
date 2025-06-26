@@ -90,9 +90,12 @@ public class PermissionController {
     @GetMapping("/user/{userId}/overrides")
     @Operation(summary = "Get user permission overrides", description = "Get permission overrides for a user")
     @PreAuthorize("hasAuthority('user.read')")
-    public ResponseEntity<ApiResponse<List<UserPermissionOverride>>> getUserPermissionOverrides(@PathVariable Long userId) {
+    public ResponseEntity<ApiResponse<List<com.rbac.dto.permission.UserPermissionOverrideResponse>>> getUserPermissionOverrides(@PathVariable Long userId) {
         List<UserPermissionOverride> overrides = permissionService.getUserPermissionOverrides(userId);
-        return ResponseEntity.ok(ApiResponse.success(overrides));
+        List<com.rbac.dto.permission.UserPermissionOverrideResponse> response = overrides.stream()
+                .map(com.rbac.dto.permission.UserPermissionOverrideResponse::new)
+                .collect(java.util.stream.Collectors.toList());
+        return ResponseEntity.ok(ApiResponse.success(response));
     }
 
     @PostMapping("/user/overrides")
@@ -109,8 +112,8 @@ public class PermissionController {
     public ResponseEntity<ApiResponse<Object>> addUserPermissionOverrides(
             @RequestParam Long userId,
             @RequestBody List<UserPermissionOverrideRequest> overrides) {
-        permissionService.addUserPermissionOverrides(userId, overrides);
-        return ResponseEntity.ok(ApiResponse.success("User permission overrides added successfully"));
+        Map<String, Object> result = permissionService.addUserPermissionOverrides(userId, overrides);
+        return ResponseEntity.ok(ApiResponse.success(result.get("message").toString(), result));
     }
 
     @GetMapping("/check/{userId}/{permissionKey}")
