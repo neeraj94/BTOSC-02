@@ -26,6 +26,7 @@ public class JwtResponse {
         this.dashboardModulesWithPermissions = dashboardModulesWithPermissions;
     }
 
+    // Getters and Setters
     public String getAccessToken() { return token; }
     public void setAccessToken(String accessToken) { this.token = accessToken; }
 
@@ -44,27 +45,14 @@ public class JwtResponse {
     public List<String> getRoles() { return roles; }
     public void setRoles(List<String> roles) { this.roles = roles; }
 
-    public List<String> getPermissions() {
-        return permissions;
-    }
+    public List<String> getPermissions() { return permissions; }
+    public void setPermissions(List<String> permissions) { this.permissions = permissions; }
 
-    public void setPermissions(List<String> permissions) {
-        this.permissions = permissions;
-    }
+    public List<String> getDashboardModules() { return dashboardModules; }
+    public void setDashboardModules(List<String> dashboardModules) { this.dashboardModules = dashboardModules; }
 
-    public List<String> getDashboardModules() {
-        return dashboardModules;
-    }
-
-    public void setDashboardModules(List<String> dashboardModules) {
-        this.dashboardModules = dashboardModules;
-    }
-
-    public Map<String, List<String>> getDashboardModulesWithPermissions() {
-        return dashboardModulesWithPermissions;
-    }
-
-    public void setDashboardModulesWithPermissions(Map<String, List<String>> dashboardModulesWithPermissions) {
-        this.dashboardModulesWithPermissions = dashboardModulesWithPermissions;
+    public Map<String, List<String>> getDashboardModulesWithPermissions() { return dashboardModulesWithPermissions; }
+    public void setDashboardModulesWithPermissions(Map<String, List<String>> dashboardModulesWithPermissions) { 
+        this.dashboardModulesWithPermissions = dashboardModulesWithPermissions; 
     }
 }

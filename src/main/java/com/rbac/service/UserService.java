@@ -38,6 +38,9 @@ public class UserService {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private com.rbac.repository.UserPermissionOverrideRepository userPermissionOverrideRepository;
+
     public UserResponse createUser(CreateUserRequest request) {
         // Check if username already exists
         if (userRepository.existsByUsername(request.getUsername())) {
@@ -114,6 +117,11 @@ public class UserService {
 
         // Update roles
         if (request.getRoleIds() != null) {
+            // Clear existing permission overrides BEFORE updating roles
+            userPermissionOverrideRepository.deleteByUserId(userId);
+            // Force flush to ensure deletion happens immediately
+            userPermissionOverrideRepository.flush();
+            
             Set<Role> roles = new HashSet<>();
             for (Long roleId : request.getRoleIds()) {
                 Role role = roleRepository.findById(roleId)
