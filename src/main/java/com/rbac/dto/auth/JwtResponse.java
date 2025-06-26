@@ -1,6 +1,7 @@
 package com.rbac.dto.auth;
 
 import java.util.List;
+import java.util.Map;
 
 public class JwtResponse {
     private String token;
@@ -10,14 +11,19 @@ public class JwtResponse {
     private String email;
     private List<String> roles;
     private List<String> permissions;
+    private List<String> dashboardModules;
+    private Map<String, List<String>> dashboardModulesWithPermissions;
 
-    public JwtResponse(String accessToken, Long id, String username, String email, List<String> roles, List<String> permissions) {
+    public JwtResponse(String accessToken, Long id, String username, String email, List<String> roles, List<String> permissions, List<String> dashboardModules, Map<String, List<String>> dashboardModulesWithPermissions) {
         this.token = accessToken;
+        this.type = "Bearer";
         this.id = id;
         this.username = username;
         this.email = email;
         this.roles = roles;
         this.permissions = permissions;
+        this.dashboardModules = dashboardModules;
+        this.dashboardModulesWithPermissions = dashboardModulesWithPermissions;
     }
 
     public String getAccessToken() { return token; }
@@ -38,6 +44,27 @@ public class JwtResponse {
     public List<String> getRoles() { return roles; }
     public void setRoles(List<String> roles) { this.roles = roles; }
 
-    public List<String> getPermissions() { return permissions; }
-    public void setPermissions(List<String> permissions) { this.permissions = permissions; }
+    public List<String> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(List<String> permissions) {
+        this.permissions = permissions;
+    }
+
+    public List<String> getDashboardModules() {
+        return dashboardModules;
+    }
+
+    public void setDashboardModules(List<String> dashboardModules) {
+        this.dashboardModules = dashboardModules;
+    }
+
+    public Map<String, List<String>> getDashboardModulesWithPermissions() {
+        return dashboardModulesWithPermissions;
+    }
+
+    public void setDashboardModulesWithPermissions(Map<String, List<String>> dashboardModulesWithPermissions) {
+        this.dashboardModulesWithPermissions = dashboardModulesWithPermissions;
+    }
 }

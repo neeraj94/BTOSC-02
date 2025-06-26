@@ -2,6 +2,7 @@ package com.rbac.controller;
 
 import com.rbac.dto.auth.JwtResponse;
 import com.rbac.dto.auth.LoginRequest;
+import com.rbac.dto.common.ApiResponse;
 import com.rbac.security.JwtUtils;
 import com.rbac.security.UserPrincipal;
 import com.rbac.service.PermissionService;
@@ -17,7 +18,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -41,7 +41,7 @@ public class AuthController {
 
     @PostMapping("/signin")
     @Operation(summary = "User login", description = "Authenticate user and return JWT token")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<ApiResponse<JwtResponse>> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(
                         loginRequest.getUsername(),
@@ -53,60 +53,44 @@ public class AuthController {
         UserPrincipal userDetails = (UserPrincipal) authentication.getPrincipal();
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
+                .filter(authority -> authority.startsWith("ROLE_"))
+                .map(authority -> authority.substring(5)) // Remove "ROLE_" prefix
                 .collect(Collectors.toList());
 
         List<String> permissions = permissionService.getUserEffectivePermissions(userDetails.getId());
+        List<String> dashboardModules = permissionService.getUserDashboardModules(userDetails.getId());
+        Map<String, List<String>> dashboardModulesWithPermissions = permissionService.getUserDashboardModulesWithPermissions(userDetails.getId());
 
-        return ResponseEntity.ok(new JwtResponse(jwt,
+        JwtResponse jwtResponse = new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
                 roles,
-                permissions));
+                permissions,
+                dashboardModules,
+                dashboardModulesWithPermissions);
+
+        return ResponseEntity.ok(ApiResponse.success("Login successful", jwtResponse));
     }
 
     @GetMapping("/verify-email")
     @Operation(summary = "Verify email", description = "Verify user email with token")
-    public ResponseEntity<?> verifyEmail(@RequestParam String token) {
-        try {
-            userService.verifyEmail(token);
-            Map<String, String> response = new HashMap<>();
-            response.put("message", "Email verified successfully");
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            Map<String, String> response = new HashMap<>();
-            response.put("error", e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
+    public ResponseEntity<ApiResponse<Object>> verifyEmail(@RequestParam String token) {
+        userService.verifyEmail(token);
+        return ResponseEntity.ok(ApiResponse.success("Email verified successfully"));
     }
 
     @PostMapping("/forgot-password")
     @Operation(summary = "Request password reset", description = "Send password reset email")
-    public ResponseEntity<?> forgotPassword(@RequestParam String email) {
-        try {
-            userService.requestPasswordReset(email);
-            Map<String, String> response = new HashMap<>();
-            response.put("message", "Password reset email sent");
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            Map<String, String> response = new HashMap<>();
-            response.put("error", e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
+    public ResponseEntity<ApiResponse<Object>> forgotPassword(@RequestParam String email) {
+        userService.requestPasswordReset(email);
+        return ResponseEntity.ok(ApiResponse.success("Password reset email sent successfully"));
     }
 
     @PostMapping("/reset-password")
     @Operation(summary = "Reset password", description = "Reset password with token")
-    public ResponseEntity<?> resetPassword(@RequestParam String token, @RequestParam String newPassword) {
-        try {
-            userService.resetPassword(token, newPassword);
-            Map<String, String> response = new HashMap<>();
-            response.put("message", "Password reset successfully");
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            Map<String, String> response = new HashMap<>();
-            response.put("error", e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
+    public ResponseEntity<ApiResponse<Object>> resetPassword(@RequestParam String token, @RequestParam String newPassword) {
+        userService.resetPassword(token, newPassword);
+        return ResponseEntity.ok(ApiResponse.success("Password reset successfully"));
     }
 }

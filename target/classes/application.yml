@@ -1,22 +1,27 @@
 spring:
   application:
     name: role-permission-management
-  
+
   datasource:
-    url: jdbc:h2:mem:rbac_system;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MySQL;DATABASE_TO_LOWER=TRUE
+    url: jdbc:h2:mem:rbac_system
     username: sa
     password: password
     driver-class-name: org.h2.Driver
-  
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     show-sql: true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
         format_sql: true
-  
+
   mail:
     host: smtp.gmail.com
     port: 587
