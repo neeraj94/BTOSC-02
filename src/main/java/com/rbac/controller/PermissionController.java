@@ -1,5 +1,7 @@
+
 package com.rbac.controller;
 
+import com.rbac.dto.common.ApiResponse;
 import com.rbac.dto.permission.PermissionResponse;
 import com.rbac.dto.permission.UserPermissionOverrideRequest;
 import com.rbac.entity.Permission;
@@ -19,7 +21,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -39,7 +40,7 @@ public class PermissionController {
     @GetMapping
     @Operation(summary = "Get all permissions", description = "Retrieve all permissions with pagination and filtering")
     @PreAuthorize("hasAuthority('permission.read')")
-    public ResponseEntity<Page<PermissionResponse>> getAllPermissions(
+    public ResponseEntity<ApiResponse<Page<PermissionResponse>>> getAllPermissions(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size,
             @RequestParam(defaultValue = "module") String sortBy,
@@ -53,21 +54,21 @@ public class PermissionController {
         
         Page<PermissionResponse> permissions = permissionService.getPermissionsWithFilters(module, name, pageable)
                 .map(PermissionResponse::new);
-        return ResponseEntity.ok(permissions);
+        return ResponseEntity.ok(ApiResponse.success(permissions));
     }
 
     @GetMapping("/modules")
     @Operation(summary = "Get all modules", description = "Retrieve all permission modules")
     @PreAuthorize("hasAuthority('permission.read')")
-    public ResponseEntity<List<String>> getAllModules() {
+    public ResponseEntity<ApiResponse<List<String>>> getAllModules() {
         List<String> modules = permissionService.getAllModules();
-        return ResponseEntity.ok(modules);
+        return ResponseEntity.ok(ApiResponse.success(modules));
     }
 
     @GetMapping("/grouped")
     @Operation(summary = "Get permissions grouped by module", description = "Retrieve permissions grouped by module")
     @PreAuthorize("hasAuthority('permission.read')")
-    public ResponseEntity<Map<String, List<PermissionResponse>>> getPermissionsGroupedByModule() {
+    public ResponseEntity<ApiResponse<Map<String, List<PermissionResponse>>>> getPermissionsGroupedByModule() {
         Map<String, List<Permission>> groupedPermissions = permissionService.getPermissionsGroupedByModule();
         Map<String, List<PermissionResponse>> response = groupedPermissions.entrySet().stream()
                 .collect(Collectors.toMap(
@@ -76,29 +77,29 @@ public class PermissionController {
                                 .map(PermissionResponse::new)
                                 .collect(Collectors.toList())
                 ));
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(ApiResponse.success(response));
     }
 
     @GetMapping("/user/{userId}")
     @Operation(summary = "Get user effective permissions", description = "Get effective permissions for a user")
     @PreAuthorize("hasAuthority('user.read')")
-    public ResponseEntity<List<String>> getUserEffectivePermissions(@PathVariable Long userId) {
+    public ResponseEntity<ApiResponse<List<String>>> getUserEffectivePermissions(@PathVariable Long userId) {
         List<String> permissions = permissionService.getUserEffectivePermissions(userId);
-        return ResponseEntity.ok(permissions);
+        return ResponseEntity.ok(ApiResponse.success(permissions));
     }
 
     @GetMapping("/user/{userId}/overrides")
     @Operation(summary = "Get user permission overrides", description = "Get permission overrides for a user")
     @PreAuthorize("hasAuthority('user.read')")
-    public ResponseEntity<List<UserPermissionOverride>> getUserPermissionOverrides(@PathVariable Long userId) {
+    public ResponseEntity<ApiResponse<List<UserPermissionOverride>>> getUserPermissionOverrides(@PathVariable Long userId) {
         List<UserPermissionOverride> overrides = permissionService.getUserPermissionOverrides(userId);
-        return ResponseEntity.ok(overrides);
+        return ResponseEntity.ok(ApiResponse.success(overrides));
     }
 
     @PostMapping("/user/overrides")
     @Operation(summary = "Set user permission overrides", description = "Set permission overrides for a user")
     @PreAuthorize("hasAuthority('permission.assign')")
-    public ResponseEntity<?> setUserPermissionOverrides(@Valid @RequestBody UserPermissionOverrideRequest request) {
+    public ResponseEntity<ApiResponse<Object>> setUserPermissionOverrides(@Valid @RequestBody UserPermissionOverrideRequest request) {
         List<UserPermissionOverride> overrides = request.getOverrides().stream()
                 .map(override -> {
                     UserPermissionOverride upo = new UserPermissionOverride();
@@ -112,18 +113,15 @@ public class PermissionController {
         
         permissionService.setUserPermissionOverrides(request.getUserId(), overrides);
         
-        Map<String, String> response = new HashMap<>();
-        response.put("message", "User permission overrides updated successfully");
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(ApiResponse.success("User permission overrides updated successfully"));
     }
 
     @GetMapping("/check/{userId}/{permissionKey}")
     @Operation(summary = "Check user permission", description = "Check if user has specific permission")
     @PreAuthorize("hasAuthority('permission.read')")
-    public ResponseEntity<Map<String, Boolean>> checkUserPermission(@PathVariable Long userId, @PathVariable String permissionKey) {
+    public ResponseEntity<ApiResponse<Map<String, Boolean>>> checkUserPermission(@PathVariable Long userId, @PathVariable String permissionKey) {
         boolean hasPermission = permissionService.hasPermission(userId, permissionKey);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("hasPermission", hasPermission);
-        return ResponseEntity.ok(response);
+        Map<String, Boolean> result = Map.of("hasPermission", hasPermission);
+        return ResponseEntity.ok(ApiResponse.success(result));
     }
 }
