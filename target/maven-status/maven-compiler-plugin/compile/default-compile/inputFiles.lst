@@ -1,3 +1,4 @@
+/home/runner/workspace/src/main/java/com/rbac/dto/permission/UserPermissionOverrideResponse.java
 /home/runner/workspace/src/main/java/com/rbac/dto/role/RoleResponse.java
 /home/runner/workspace/src/main/java/com/rbac/repository/RoleRepository.java
 /home/runner/workspace/src/main/java/com/rbac/security/UserPrincipal.java
