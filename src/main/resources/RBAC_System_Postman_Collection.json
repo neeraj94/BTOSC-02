@@ -1439,6 +1439,129 @@
 			]
 		},
 		{
+			"name": "Settings Management",
+			"item": [
+				{
+					"name": "Get Categories",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/settings/categories",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "settings", "categories"]
+						}
+					}
+				},
+				{
+					"name": "Get SubCategories by Category",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/settings/categories/1/subcategories",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "settings", "categories", "1", "subcategories"]
+						}
+					}
+				},
+				{
+					"name": "Get Fields by SubCategory",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/settings/subcategories/1/fields",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "settings", "subcategories", "1", "fields"]
+						}
+					}
+				},
+				{
+					"name": "Bulk Update Fields",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"settings\": {\n        \"smtp_host\": \"smtp.office365.com\",\n        \"smtp_port\": \"587\",\n        \"smtp_ssl_enabled\": \"true\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/settings/subcategories/1/fields",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "settings", "subcategories", "1", "fields"]
+						}
+					}
+				},
+				{
+					"name": "Create New Field",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fieldKey\": \"smtp_timeout\",\n    \"label\": \"SMTP Timeout\",\n    \"fieldValue\": \"30000\",\n    \"fieldType\": \"text\",\n    \"isRequired\": false,\n    \"description\": \"SMTP connection timeout in milliseconds\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/settings/subcategories/1/fields",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "settings", "subcategories", "1", "fields"]
+						}
+					}
+				},
+				{
+					"name": "Delete Field",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/settings/fields/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "settings", "fields", "1"]
+						}
+					}
+				}
+			]
+		},
+		{
 			"name": "Export",
 			"item": [
 				{
