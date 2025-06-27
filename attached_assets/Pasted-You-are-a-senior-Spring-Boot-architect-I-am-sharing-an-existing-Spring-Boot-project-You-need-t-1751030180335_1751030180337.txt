@@ -1,0 +1,122 @@
+You are a senior Spring Boot architect. I am sharing an **existing Spring Boot project**. You need to integrate a **new feature module** into it called **Settings Management** with the following architecture:
+
+---
+
+### 🔧 Module: Hierarchical Settings Management
+
+You are designing a backend module for managing nested settings in an admin dashboard. It must support:
+
+#### 🧩 Structure:
+- `Category` (e.g., General, Payment, Communication)
+  - `SubCategory` (e.g., SMTP, Razorpay, Email Templates)
+    - `SettingField` (actual fields like logo URL, mode, port, API key)
+
+#### 🧩 Setting Field Types:
+Each `SettingField` must support:
+- `text`
+- `textarea`
+- `radio`
+- `dropdown`
+- `multi-select`
+- `checkbox`
+- `boolean`
+- (Allow extensibility to add more field types later)
+
+---
+
+### ✅ Requirements
+
+1. **Preserve existing functionality.**
+   - Do not affect or modify existing modules in the project.
+   - Keep this module isolated in its own package (`com.example.settings` or similar).
+
+2. **Database Schema (SQL File)**
+   - Generate SQL file `data-settings.sql` with:
+     - A few categories (`GENERAL`, `PAYMENT`)
+     - Subcategories like `SMTP`, `Stripe`, `Razorpay`
+     - Setting fields (e.g., `smtpHost`, `smtpPort`, etc.)
+     - Example values and field types
+
+3. **Entities:**
+   - `SettingCategory`: id, name, description
+   - `SettingSubCategory`: id, name, category_id (FK), description
+   - `SettingField`: id, key, label, value, fieldType, isRequired, options (JSON), subCategory_id (FK), description
+
+4. **Security & Permissions:**
+   - Endpoints protected via Spring Security using JWT tokens
+   - Each endpoint must be annotated with `@PreAuthorize("hasAuthority('settings.read')")`, `settings.create`, `settings.update`, etc.
+   - Use existing JWT + permission-based security infrastructure from the current project
+
+5. **API Endpoints:**
+   Under the base path: `/api/settings`
+
+   - `GET /categories`  
+     → Get list of categories  
+     → Permission: `settings.read`
+
+   - `GET /categories/{categoryId}/subcategories`  
+     → List subcategories under a category  
+     → Permission: `settings.read`
+
+   - `GET /subcategories/{subCategoryId}/fields`  
+     → List all settings fields in a subcategory  
+     → Permission: `settings.read`
+
+   - `PUT /subcategories/{subCategoryId}/fields`  
+     → Bulk update settings fields by key/value  
+     → Permission: `settings.update`
+
+   - `POST /subcategories/{subCategoryId}/fields`  
+     → Add new field to a subcategory  
+     → Permission: `settings.create`
+
+   - `DELETE /fields/{fieldId}`  
+     → Delete a setting field  
+     → Permission: `settings.delete`
+
+---
+
+### 📦 Tech Stack & Coding Guidelines
+
+- Java 17+, Spring Boot 3.x
+- Spring Data JPA (MySQL or PostgreSQL)
+- `@Transactional` on mutating services
+- DTOs for all responses and requests
+- Use `jakarta.validation` for field validation
+- `MapStruct` for mapping (optional)
+- `application.yml` configuration
+- `@ControllerAdvice` for exception handling
+- Package structure:
+  - `controller.settings`
+  - `service.settings`
+  - `dto.settings`
+  - `repository.settings`
+  - `entity.settings`
+  - `config.settings` (if needed)
+
+---
+
+### 🧪 Postman Integration
+
+- Update the existing Postman collection located under `src/main/resources/postman/collection.json`
+- Add a **new folder named “Settings Management”**
+- Add all 6 endpoints above with:
+  - Sample requests
+  - Dynamic environment variable for `{{token}}`
+  - Headers: `Authorization: Bearer {{token}}`, `Content-Type: application/json`
+  - Example request/response for each
+
+---
+
+### 📂 Final Deliverables
+
+1. Updated code inside the shared Spring Boot project under its own `settings` package
+2. `data-settings.sql` file with:
+   - Sample categories, subcategories, fields
+3. Updated Postman collection in `src/main/resources/postman/collection.json`
+4. No modifications to existing services, endpoints, or configs outside this module
+5. Endpoints protected via existing JWT-based authorization system
+
+---
+
+🎯 This module must be self-contained, easily extensible for future settings types/categories, and production-ready.
