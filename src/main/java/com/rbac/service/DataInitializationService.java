@@ -157,11 +157,7 @@ public class DataInitializationService {
 
             userRepository.save(superAdmin);
             log.info("Super Admin user created with username: {}", superAdmin.getUsername());
-
-        // Create default settings
-        createDefaultSettings();
-
-        log.info("Data initialization completed successfully.");
+        }
     }
 
     private void createDefaultSettings() {
