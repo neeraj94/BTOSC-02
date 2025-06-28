@@ -186,6 +186,95 @@ Use the role management APIs to create roles with specific permission sets.
 ### User Permission Overrides
 Use the permission override APIs to grant or deny specific permissions to individual users.
 
+## Settings Management
+
+The Settings module provides dynamic application configuration management with support for various data types and formats.
+
+### Features
+- **Dynamic Configuration**: Store and manage application settings at runtime
+- **Multiple Data Types**: Support for string, boolean, number, json, array, html, css, js, richtext, color, url, email, date, datetime
+- **Key-based Access**: Retrieve settings by unique keys
+- **Search & Filter**: Find settings by key or type with pagination
+- **Audit Trail**: Track creation and modification with timestamps and user information
+
+### API Endpoints
+
+| Endpoint | Method | Permission | Description |
+|----------|--------|------------|-------------|
+| `/api/settings` | GET | `settings.view` | Get paginated list of settings with filters |
+| `/api/settings/{id}` | GET | `settings.view` | Get setting by ID |
+| `/api/settings/{key}/view` | GET | `settings.view` | Get setting by key |
+| `/api/settings` | POST | `settings.create` | Create new setting |
+| `/api/settings/{id}` | PUT | `settings.update` | Update setting value/type |
+| `/api/settings/{id}` | DELETE | `settings.delete` | Delete setting |
+
+### Setting Types
+- **string**: Plain text values
+- **boolean**: True/false values
+- **number**: Numeric values
+- **json**: JSON formatted data
+- **array**: Array formatted data
+- **html**: HTML markup
+- **css**: CSS styles
+- **js**: JavaScript code
+- **richtext**: Rich text content
+- **color**: Color values (hex, rgb, etc.)
+- **url**: URL addresses
+- **email**: Email addresses
+- **date**: Date values
+- **datetime**: Date and time values
+
+### Example Usage
+
+#### Create a String Setting
+```bash
+curl -X POST "http://localhost:8080/api/settings" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "key": "store_name",
+    "value": "My Amazing Store",
+    "type": "string"
+  }'
+```
+
+#### Create a JSON Setting
+```bash
+curl -X POST "http://localhost:8080/api/settings" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "key": "smtp_config",
+    "value": "{\"host\":\"smtp.gmail.com\",\"port\":587,\"encryption\":\"tls\"}",
+    "type": "json"
+  }'
+```
+
+#### Get Setting by Key
+```bash
+curl -X GET "http://localhost:8080/api/settings/store_name/view" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
+
+#### List Settings with Filters
+```bash
+curl -X GET "http://localhost:8080/api/settings?page=0&size=10&sortBy=createdAt&type=string" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
+
+### Required Permissions
+- **settings.view**: Required to view and retrieve settings
+- **settings.create**: Required to create new settings
+- **settings.update**: Required to modify existing settings
+- **settings.delete**: Required to delete settings
+
+### Extensibility
+The Settings module is designed to be extensible:
+- **Custom Types**: Add new setting types by updating the validation pattern
+- **Additional Fields**: Extend the entity with custom metadata fields
+- **Business Logic**: Add custom validation or processing in the service layer
+- **Integration**: Use settings across different modules for configuration management
+
 ## License
 
 This project is licensed under the Apache 2.0 License.

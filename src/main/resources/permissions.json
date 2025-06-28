@@ -305,6 +305,30 @@
       "name": "Manage Workflows",
       "description": "Allows creating and managing workflows",
       "module": "Workflow Management"
+    },
+    {
+        "id": "settings.view",
+        "name": "View Settings",
+        "description": "Allows viewing application settings",
+        "module": "Settings"
+    },
+    {
+        "id": "settings.create",
+        "name": "Create Settings",
+        "description": "Allows creating new application settings",
+        "module": "Settings"
+    },
+    {
+        "id": "settings.update",
+        "name": "Update Settings",
+        "description": "Allows updating existing application settings",
+        "module": "Settings"
+    },
+    {
+        "id": "settings.delete",
+        "name": "Delete Settings",
+        "description": "Allows deleting application settings",
+        "module": "Settings"
     }
   ]
 }
