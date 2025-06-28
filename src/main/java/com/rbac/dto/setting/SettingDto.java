@@ -5,6 +5,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDateTime;
 
+package com.rbac.dto.setting;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import java.time.LocalDateTime;
+
 public class SettingDto {
     private Long id;
     private String key;
