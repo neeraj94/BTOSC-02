@@ -79,256 +79,28 @@
       "module": "Permission Management"
     },
     {
-      "id": "report.generate",
-      "name": "Generate Reports",
-      "description": "Allows generation of system reports",
-      "module": "Reporting"
+      "id": "settings.view",
+      "name": "View Settings",
+      "description": "Allows viewing application settings",
+      "module": "Settings Management"
     },
     {
-      "id": "report.view",
-      "name": "View Reports",
-      "description": "Allows viewing of generated reports",
-      "module": "Reporting"
+      "id": "settings.create",
+      "name": "Create Settings",
+      "description": "Allows creating new application settings",
+      "module": "Settings Management"
     },
     {
-      "id": "report.download",
-      "name": "Download Reports",
-      "description": "Allows downloading of system-generated reports",
-      "module": "Reporting"
+      "id": "settings.update",
+      "name": "Update Settings",
+      "description": "Allows updating existing application settings",
+      "module": "Settings Management"
     },
     {
-      "id": "report.export",
-      "name": "Export Reports",
-      "description": "Allows exporting reports in various formats",
-      "module": "Reporting"
-    },
-    {
-      "id": "dashboard.view",
-      "name": "View Dashboard",
-      "description": "Allows access to system dashboard",
-      "module": "Dashboard"
-    },
-    {
-      "id": "dashboard.admin",
-      "name": "Admin Dashboard",
-      "description": "Allows access to administrative dashboard features",
-      "module": "Dashboard"
-    },
-    {
-      "id": "contract.create",
-      "name": "Create Contract",
-      "description": "Allows creation of new contracts",
-      "module": "Contract Management"
-    },
-    {
-      "id": "contract.read",
-      "name": "View Contracts",
-      "description": "Allows viewing of contract lists and details",
-      "module": "Contract Management"
-    },
-    {
-      "id": "contract.update",
-      "name": "Update Contract",
-      "description": "Allows modification of contract details",
-      "module": "Contract Management"
-    },
-    {
-      "id": "contract.delete",
-      "name": "Delete Contract",
-      "description": "Allows deletion of existing contracts",
-      "module": "Contract Management"
-    },
-    {
-      "id": "contract.approve",
-      "name": "Approve Contract",
-      "description": "Allows approval of contracts",
-      "module": "Contract Management"
-    },
-    {
-      "id": "contract.export",
-      "name": "Export Contracts",
-      "description": "Allows exporting contract data",
-      "module": "Contract Management"
-    },
-    {
-      "id": "notification.send",
-      "name": "Send Notifications",
-      "description": "Allows sending system notifications",
-      "module": "Communication"
-    },
-    {
-      "id": "notification.view",
-      "name": "View Notifications",
-      "description": "Allows viewing notification history",
-      "module": "Communication"
-    },
-    {
-      "id": "audit.view",
-      "name": "View Audit Logs",
-      "description": "Allows viewing system audit logs",
-      "module": "System Administration"
-    },
-    {
-      "id": "system.backup",
-      "name": "System Backup",
-      "description": "Allows performing system backups",
-      "module": "System Administration"
-    },
-    {
-      "id": "system.restore",
-      "name": "System Restore",
-      "description": "Allows restoring system from backups",
-      "module": "System Administration"
-    },
-    {
-      "id": "system.config",
-      "name": "System Configuration",
-      "description": "Allows modification of system configurations",
-      "module": "System Administration"
-    },
-    {
-      "id": "analytics.view",
-      "name": "View Analytics",
-      "description": "Allows viewing system analytics",
-      "module": "Analytics"
-    },
-    {
-      "id": "analytics.export",
-      "name": "Export Analytics",
-      "description": "Allows exporting analytics data",
-      "module": "Analytics"
-    },
-    {
-      "id": "finance.view",
-      "name": "View Financial Data",
-      "description": "Allows viewing financial information",
-      "module": "Finance"
-    },
-    {
-      "id": "finance.manage",
-      "name": "Manage Finance",
-      "description": "Allows managing financial transactions",
-      "module": "Finance"
-    },
-    {
-      "id": "finance.export",
-      "name": "Export Financial Data",
-      "description": "Allows exporting financial reports",
-      "module": "Finance"
-    },
-    {
-      "id": "inventory.view",
-      "name": "View Inventory",
-      "description": "Allows viewing inventory items",
-      "module": "Inventory Management"
-    },
-    {
-      "id": "inventory.manage",
-      "name": "Manage Inventory",
-      "description": "Allows managing inventory items",
-      "module": "Inventory Management"
-    },
-    {
-      "id": "inventory.export",
-      "name": "Export Inventory",
-      "description": "Allows exporting inventory data",
-      "module": "Inventory Management"
-    },
-    {
-      "id": "support.view",
-      "name": "View Support Tickets",
-      "description": "Allows viewing customer support tickets",
-      "module": "Customer Support"
-    },
-    {
-      "id": "support.manage",
-      "name": "Manage Support Tickets",
-      "description": "Allows managing customer support tickets",
-      "module": "Customer Support"
-    },
-    {
-      "id": "integration.configure",
-      "name": "Configure Integrations",
-      "description": "Allows configuring external integrations",
-      "module": "Integration Management"
-    },
-    {
-      "id": "integration.monitor",
-      "name": "Monitor Integrations",
-      "description": "Allows monitoring integration status",
-      "module": "Integration Management"
-    },
-    {
-      "id": "api.access",
-      "name": "API Access",
-      "description": "Allows access to system APIs",
-      "module": "API Management"
-    },
-    {
-      "id": "api.manage",
-      "name": "Manage API Keys",
-      "description": "Allows managing API keys and access",
-      "module": "API Management"
-    },
-    {
-      "id": "security.view",
-      "name": "View Security Logs",
-      "description": "Allows viewing security and access logs",
-      "module": "Security"
-    },
-    {
-      "id": "security.manage",
-      "name": "Manage Security Settings",
-      "description": "Allows managing security configurations",
-      "module": "Security"
-    },
-    {
-      "id": "email.send",
-      "name": "Send Emails",
-      "description": "Allows sending system emails",
-      "module": "Communication"
-    },
-    {
-      "id": "template.manage",
-      "name": "Manage Templates",
-      "description": "Allows managing email and document templates",
-      "module": "Template Management"
-    },
-    {
-      "id": "workflow.view",
-      "name": "View Workflows",
-      "description": "Allows viewing system workflows",
-      "module": "Workflow Management"
-    },
-    {
-      "id": "workflow.manage",
-      "name": "Manage Workflows",
-      "description": "Allows creating and managing workflows",
-      "module": "Workflow Management"
-    },
-    {
-        "id": "settings.view",
-        "name": "View Settings",
-        "description": "Allows viewing application settings",
-        "module": "Settings"
-    },
-    {
-        "id": "settings.create",
-        "name": "Create Settings",
-        "description": "Allows creating new application settings",
-        "module": "Settings"
-    },
-    {
-        "id": "settings.update",
-        "name": "Update Settings",
-        "description": "Allows updating existing application settings",
-        "module": "Settings"
-    },
-    {
-        "id": "settings.delete",
-        "name": "Delete Settings",
-        "description": "Allows deleting application settings",
-        "module": "Settings"
+      "id": "settings.delete",
+      "name": "Delete Settings",
+      "description": "Allows deleting application settings",
+      "module": "Settings Management"
     }
   ]
 }

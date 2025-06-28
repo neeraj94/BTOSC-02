@@ -4,9 +4,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rbac.entity.Permission;
 import com.rbac.entity.Role;
+import com.rbac.entity.Setting;
 import com.rbac.entity.User;
 import com.rbac.repository.PermissionRepository;
 import com.rbac.repository.RoleRepository;
+import com.rbac.repository.SettingRepository;
 import com.rbac.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
@@ -24,7 +26,7 @@ import java.util.Set;
 
 @Service
 public class DataInitializationService {
-    private static final Logger logger = LoggerFactory.getLogger(DataInitializationService.class);
+    private static final Logger log = LoggerFactory.getLogger(DataInitializationService.class);
 
     @Autowired
     private PermissionRepository permissionRepository;
@@ -34,6 +36,9 @@ public class DataInitializationService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private SettingRepository settingRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -50,22 +55,26 @@ public class DataInitializationService {
     @PostConstruct
     @Transactional
     public void initializeData() {
-        logger.info("Starting data initialization...");
-        
+        log.info("Starting data initialization...");
+
         try {
             initializePermissions();
             initializeRoles();
             initializeSuperAdmin();
-            logger.info("Data initialization completed successfully.");
+
+            // Create default settings
+            createDefaultSettings();
+
+            log.info("Data initialization completed successfully.");
         } catch (Exception e) {
-            logger.error("Error during data initialization: ", e);
+            log.error("Error during data initialization: ", e);
         }
     }
 
     private void initializePermissions() throws IOException {
         if (permissionRepository.count() == 0) {
-            logger.info("Initializing permissions from JSON file...");
-            
+            log.info("Initializing permissions from JSON file...");
+
             ObjectMapper objectMapper = new ObjectMapper();
             ClassPathResource resource = new ClassPathResource("permissions.json");
             JsonNode rootNode = objectMapper.readTree(resource.getInputStream());
@@ -80,15 +89,15 @@ public class DataInitializationService {
                 Permission permission = new Permission(key, name, description, module);
                 permissionRepository.save(permission);
             }
-            
-            logger.info("Permissions initialized: {} permissions loaded", permissionsNode.size());
+
+            log.info("Permissions initialized: {} permissions loaded", permissionsNode.size());
         }
     }
 
     private void initializeRoles() throws IOException {
         if (roleRepository.count() == 0) {
-            logger.info("Initializing default roles...");
-            
+            log.info("Initializing default roles...");
+
             // Create Super Admin Role with all permissions
             Role superAdminRole = new Role("SUPER_ADMIN", "Super Administrator with full access");
             superAdminRole.setIsSystemRole(true);
@@ -103,13 +112,13 @@ public class DataInitializationService {
             customerRole.setPermissions(customerPermissions);
             roleRepository.save(customerRole);
 
-            logger.info("Default roles created: SUPER_ADMIN and CUSTOMER");
+            log.info("Default roles created: SUPER_ADMIN and CUSTOMER");
         }
     }
 
     private Set<Permission> getCustomerPermissions() throws IOException {
         Set<Permission> customerPermissions = new HashSet<>();
-        
+
         ObjectMapper objectMapper = new ObjectMapper();
         ClassPathResource resource = new ClassPathResource("customer-permissions.json");
         JsonNode rootNode = objectMapper.readTree(resource.getInputStream());
@@ -122,14 +131,14 @@ public class DataInitializationService {
                 customerPermissions.add(permission);
             }
         }
-        
+
         return customerPermissions;
     }
 
     private void initializeSuperAdmin() {
         if (!userRepository.existsByUsername(superAdminUsername)) {
-            logger.info("Creating Super Admin user...");
-            
+            log.info("Creating Super Admin user...");
+
             User superAdmin = new User();
             superAdmin.setUsername(superAdminUsername);
             superAdmin.setEmail(superAdminEmail);
@@ -147,7 +156,51 @@ public class DataInitializationService {
             }
 
             userRepository.save(superAdmin);
-            logger.info("Super Admin user created with username: {}", superAdminUsername);
+            log.info("Super Admin user created with username: {}", superAdmin.getUsername());
+
+        // Create default settings
+        createDefaultSettings();
+
+        log.info("Data initialization completed successfully.");
+    }
+
+    private void createDefaultSettings() {
+        log.info("Creating default settings...");
+
+        // Check if settings already exist
+        if (settingRepository.count() > 0) {
+            log.info("Settings already exist, skipping default settings creation.");
+            return;
         }
+
+        // Create default application settings
+        Setting[] defaultSettings = {
+            createSetting("app_name", "RBAC Management System", "string"),
+            createSetting("app_version", "1.0.0", "string"),
+            createSetting("company_name", "Your Company Name", "string"),
+            createSetting("admin_email", "admin@example.com", "email"),
+            createSetting("max_login_attempts", "5", "number"),
+            createSetting("session_timeout", "30", "number"),
+            createSetting("enable_email_notifications", "true", "boolean"),
+            createSetting("maintenance_mode", "false", "boolean"),
+            createSetting("theme_color", "#007bff", "color"),
+            createSetting("api_rate_limit", "100", "number")
+        };
+
+        for (Setting setting : defaultSettings) {
+            settingRepository.save(setting);
+        }
+
+        log.info("Default settings created successfully.");
+    }
+
+    private Setting createSetting(String key, String value, String type) {
+        Setting setting = new Setting();
+        setting.setKey(key);
+        setting.setValue(value);
+        setting.setType(type);
+        setting.setCreatedBy("system");
+        setting.setUpdatedBy("system");
+        return setting;
     }
 }

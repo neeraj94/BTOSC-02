@@ -106,9 +106,9 @@ public class SettingService {
             Setting setting = settingRepository.findById(id)
                     .orElseThrow(() -> new ResourceNotFoundException("Setting not found with id: " + id));
 
-            if (request.getValue() != null) {
-                setting.setValue(request.getValue());
-            }
+            // Update value even if it's null (allow explicit null updates)
+            setting.setValue(request.getValue());
+            
             if (request.getType() != null) {
                 setting.setType(request.getType());
             }
