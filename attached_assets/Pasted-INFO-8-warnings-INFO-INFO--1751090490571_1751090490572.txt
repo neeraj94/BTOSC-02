@@ -1,0 +1,185 @@
+INFO] 8 warnings 
+[INFO] -------------------------------------------------------------
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[43,27] reference to ApiResponse is ambiguous
+  both class com.rbac.dto.common.ApiResponse in com.rbac.dto.common and class io.swagger.v3.oas.annotations.responses.ApiResponse in io.swagger.v3.oas.annotations.responses match
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[78,27] reference to ApiResponse is ambiguous
+  both class com.rbac.dto.common.ApiResponse in com.rbac.dto.common and class io.swagger.v3.oas.annotations.responses.ApiResponse in io.swagger.v3.oas.annotations.responses match
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[97,27] reference to ApiResponse is ambiguous
+  both class com.rbac.dto.common.ApiResponse in com.rbac.dto.common and class io.swagger.v3.oas.annotations.responses.ApiResponse in io.swagger.v3.oas.annotations.responses match
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[116,27] reference to ApiResponse is ambiguous
+  both class com.rbac.dto.common.ApiResponse in com.rbac.dto.common and class io.swagger.v3.oas.annotations.responses.ApiResponse in io.swagger.v3.oas.annotations.responses match
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[136,27] reference to ApiResponse is ambiguous
+  both class com.rbac.dto.common.ApiResponse in com.rbac.dto.common and class io.swagger.v3.oas.annotations.responses.ApiResponse in io.swagger.v3.oas.annotations.responses match
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[157,27] reference to ApiResponse is ambiguous
+  both class com.rbac.dto.common.ApiResponse in com.rbac.dto.common and class io.swagger.v3.oas.annotations.responses.ApiResponse in io.swagger.v3.oas.annotations.responses match
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[13,1] a type with the same simple name is already defined by the single-type-import of com.rbac.dto.common.ApiResponse
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[39,14] cannot find symbol
+  symbol:   class SwaggerApiResponse
+  location: class com.rbac.controller.SettingController
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[40,14] cannot find symbol
+  symbol:   class SwaggerApiResponse
+  location: class com.rbac.controller.SettingController
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[41,14] cannot find symbol
+  symbol:   class SwaggerApiResponse
+  location: class com.rbac.controller.SettingController
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[74,14] cannot find symbol
+  symbol:   class SwaggerApiResponse
+  location: class com.rbac.controller.SettingController
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[75,14] cannot find symbol
+  symbol:   class SwaggerApiResponse
+  location: class com.rbac.controller.SettingController
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[76,14] cannot find symbol
+  symbol:   class SwaggerApiResponse
+  location: class com.rbac.controller.SettingController
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[93,14] cannot find symbol
+  symbol:   class SwaggerApiResponse
+  location: class com.rbac.controller.SettingController
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[94,14] cannot find symbol
+  symbol:   class SwaggerApiResponse
+  location: class com.rbac.controller.SettingController
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[95,14] cannot find symbol
+  symbol:   class SwaggerApiResponse
+  location: class com.rbac.controller.SettingController
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[112,14] cannot find symbol
+  symbol:   class SwaggerApiResponse
+  location: class com.rbac.controller.SettingController
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[113,14] cannot find symbol
+  symbol:   class SwaggerApiResponse
+  location: class com.rbac.controller.SettingController
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[114,14] cannot find symbol
+  symbol:   class SwaggerApiResponse
+  location: class com.rbac.controller.SettingController
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[131,14] cannot find symbol
+  symbol:   class SwaggerApiResponse
+  location: class com.rbac.controller.SettingController
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[132,14] cannot find symbol
+  symbol:   class SwaggerApiResponse
+  location: class com.rbac.controller.SettingController
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[133,14] cannot find symbol
+  symbol:   class SwaggerApiResponse
+  location: class com.rbac.controller.SettingController
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[134,14] cannot find symbol
+  symbol:   class SwaggerApiResponse
+  location: class com.rbac.controller.SettingController
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[153,14] cannot find symbol
+  symbol:   class SwaggerApiResponse
+  location: class com.rbac.controller.SettingController
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[154,14] cannot find symbol
+  symbol:   class SwaggerApiResponse
+  location: class com.rbac.controller.SettingController
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[155,14] cannot find symbol
+  symbol:   class SwaggerApiResponse
+  location: class com.rbac.controller.SettingController
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[62,9] reference to ApiResponse is ambiguous
+  both class com.rbac.dto.common.ApiResponse in com.rbac.dto.common and class io.swagger.v3.oas.annotations.responses.ApiResponse in io.swagger.v3.oas.annotations.responses match
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[82,9] reference to ApiResponse is ambiguous
+  both class com.rbac.dto.common.ApiResponse in com.rbac.dto.common and class io.swagger.v3.oas.annotations.responses.ApiResponse in io.swagger.v3.oas.annotations.responses match
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[101,9] reference to ApiResponse is ambiguous
+  both class com.rbac.dto.common.ApiResponse in com.rbac.dto.common and class io.swagger.v3.oas.annotations.responses.ApiResponse in io.swagger.v3.oas.annotations.responses match
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[120,9] reference to ApiResponse is ambiguous
+  both class com.rbac.dto.common.ApiResponse in com.rbac.dto.common and class io.swagger.v3.oas.annotations.responses.ApiResponse in io.swagger.v3.oas.annotations.responses match
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[142,9] reference to ApiResponse is ambiguous
+  both class com.rbac.dto.common.ApiResponse in com.rbac.dto.common and class io.swagger.v3.oas.annotations.responses.ApiResponse in io.swagger.v3.oas.annotations.responses match
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[161,9] reference to ApiResponse is ambiguous
+  both class com.rbac.dto.common.ApiResponse in com.rbac.dto.common and class io.swagger.v3.oas.annotations.responses.ApiResponse in io.swagger.v3.oas.annotations.responses match
+[INFO] 32 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  13.495 s
+[INFO] Finished at: 2025-06-28T06:00:50Z
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile (default-compile) on project role-permission-management: Compilation failure: Compilation failure: 
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[43,27] reference to ApiResponse is ambiguous
+[ERROR]   both class com.rbac.dto.common.ApiResponse in com.rbac.dto.common and class io.swagger.v3.oas.annotations.responses.ApiResponse in io.swagger.v3.oas.annotations.responses match
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[78,27] reference to ApiResponse is ambiguous
+[ERROR]   both class com.rbac.dto.common.ApiResponse in com.rbac.dto.common and class io.swagger.v3.oas.annotations.responses.ApiResponse in io.swagger.v3.oas.annotations.responses match
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[97,27] reference to ApiResponse is ambiguous
+[ERROR]   both class com.rbac.dto.common.ApiResponse in com.rbac.dto.common and class io.swagger.v3.oas.annotations.responses.ApiResponse in io.swagger.v3.oas.annotations.responses match
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[116,27] reference to ApiResponse is ambiguous
+[ERROR]   both class com.rbac.dto.common.ApiResponse in com.rbac.dto.common and class io.swagger.v3.oas.annotations.responses.ApiResponse in io.swagger.v3.oas.annotations.responses match
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[136,27] reference to ApiResponse is ambiguous
+[ERROR]   both class com.rbac.dto.common.ApiResponse in com.rbac.dto.common and class io.swagger.v3.oas.annotations.responses.ApiResponse in io.swagger.v3.oas.annotations.responses match
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[157,27] reference to ApiResponse is ambiguous
+[ERROR]   both class com.rbac.dto.common.ApiResponse in com.rbac.dto.common and class io.swagger.v3.oas.annotations.responses.ApiResponse in io.swagger.v3.oas.annotations.responses match
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[13,1] a type with the same simple name is already defined by the single-type-import of com.rbac.dto.common.ApiResponse
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[39,14] cannot find symbol
+[ERROR]   symbol:   class SwaggerApiResponse
+[ERROR]   location: class com.rbac.controller.SettingController
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[40,14] cannot find symbol
+[ERROR]   symbol:   class SwaggerApiResponse
+[ERROR]   location: class com.rbac.controller.SettingController
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[41,14] cannot find symbol
+[ERROR]   symbol:   class SwaggerApiResponse
+[ERROR]   location: class com.rbac.controller.SettingController
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[74,14] cannot find symbol
+[ERROR]   symbol:   class SwaggerApiResponse
+[ERROR]   location: class com.rbac.controller.SettingController
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[75,14] cannot find symbol
+[ERROR]   symbol:   class SwaggerApiResponse
+[ERROR]   location: class com.rbac.controller.SettingController
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[76,14] cannot find symbol
+[ERROR]   symbol:   class SwaggerApiResponse
+[ERROR]   location: class com.rbac.controller.SettingController
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[93,14] cannot find symbol
+[ERROR]   symbol:   class SwaggerApiResponse
+[ERROR]   location: class com.rbac.controller.SettingController
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[94,14] cannot find symbol
+[ERROR]   symbol:   class SwaggerApiResponse
+[ERROR]   location: class com.rbac.controller.SettingController
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[95,14] cannot find symbol
+[ERROR]   symbol:   class SwaggerApiResponse
+[ERROR]   location: class com.rbac.controller.SettingController
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[112,14] cannot find symbol
+[ERROR]   symbol:   class SwaggerApiResponse
+[ERROR]   location: class com.rbac.controller.SettingController
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[113,14] cannot find symbol
+[ERROR]   symbol:   class SwaggerApiResponse
+[ERROR]   location: class com.rbac.controller.SettingController
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[114,14] cannot find symbol
+[ERROR]   symbol:   class SwaggerApiResponse
+[ERROR]   location: class com.rbac.controller.SettingController
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[131,14] cannot find symbol
+[ERROR]   symbol:   class SwaggerApiResponse
+[ERROR]   location: class com.rbac.controller.SettingController
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[132,14] cannot find symbol
+[ERROR]   symbol:   class SwaggerApiResponse
+[ERROR]   location: class com.rbac.controller.SettingController
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[133,14] cannot find symbol
+[ERROR]   symbol:   class SwaggerApiResponse
+[ERROR]   location: class com.rbac.controller.SettingController
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[134,14] cannot find symbol
+[ERROR]   symbol:   class SwaggerApiResponse
+[ERROR]   location: class com.rbac.controller.SettingController
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[153,14] cannot find symbol
+[ERROR]   symbol:   class SwaggerApiResponse
+[ERROR]   location: class com.rbac.controller.SettingController
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[154,14] cannot find symbol
+[ERROR]   symbol:   class SwaggerApiResponse
+[ERROR]   location: class com.rbac.controller.SettingController
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[155,14] cannot find symbol
+[ERROR]   symbol:   class SwaggerApiResponse
+[ERROR]   location: class com.rbac.controller.SettingController
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[62,9] reference to ApiResponse is ambiguous
+[ERROR]   both class com.rbac.dto.common.ApiResponse in com.rbac.dto.common and class io.swagger.v3.oas.annotations.responses.ApiResponse in io.swagger.v3.oas.annotations.responses match
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[82,9] reference to ApiResponse is ambiguous
+[ERROR]   both class com.rbac.dto.common.ApiResponse in com.rbac.dto.common and class io.swagger.v3.oas.annotations.responses.ApiResponse in io.swagger.v3.oas.annotations.responses match
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[101,9] reference to ApiResponse is ambiguous
+[ERROR]   both class com.rbac.dto.common.ApiResponse in com.rbac.dto.common and class io.swagger.v3.oas.annotations.responses.ApiResponse in io.swagger.v3.oas.annotations.responses match
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[120,9] reference to ApiResponse is ambiguous
+[ERROR]   both class com.rbac.dto.common.ApiResponse in com.rbac.dto.common and class io.swagger.v3.oas.annotations.responses.ApiResponse in io.swagger.v3.oas.annotations.responses match
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[142,9] reference to ApiResponse is ambiguous
+[ERROR]   both class com.rbac.dto.common.ApiResponse in com.rbac.dto.common and class io.swagger.v3.oas.annotations.responses.ApiResponse in io.swagger.v3.oas.annotations.responses match
+[ERROR] /home/runner/workspace/src/main/java/com/rbac/controller/SettingController.java:[161,9] reference to ApiResponse is ambiguous
+[ERROR]   both class com.rbac.dto.common.ApiResponse in com.rbac.dto.common and class io.swagger.v3.oas.annotations.responses.ApiResponse in io.swagger.v3.oas.annotations.responses match
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
