@@ -1,0 +1,118 @@
+Design a Spring Boot REST API module for dynamic application settings configuration. This module will be used in an existing backend system that already has:
+
+JWT-based authentication
+
+Role and permission-based access control (permissions.json)
+
+Centralized Postman collection under /resources
+
+Structured README.md and consistent API format
+
+🎯 Module Requirements:
+📌 Entity: Setting
+id (Long) – Auto-generated primary key
+
+key (String, unique, required) – e.g., store_name, smtp_host, theme_color
+
+value (TEXT) – The actual setting value; may include:
+
+Strings
+
+Booleans
+
+Numbers
+
+Arrays
+
+JSON
+
+HTML
+
+CSS
+
+JS
+
+Rich text or any serializable format
+
+type (String) – Describes the format or type of value (e.g., string, boolean, json, array, html, number, css, js, richtext, color, etc.)
+
+createdAt / updatedAt (timestamps)
+
+createdBy, updatedBy (optional if tracked)
+
+🔔 isTranslatable is excluded for now.
+
+🔁 Endpoints (all secured via role-permission model):
+Endpoint	Description	Method
+/api/settings	Get paginated list of settings with filters by type/key	GET
+/api/settings/{id}	Get setting by ID	GET
+/api/settings/{key}/view	Get setting by key only	GET
+/api/settings	Create a new setting	POST
+/api/settings/{id}	Update setting value/type	PUT
+/api/settings/{id}	Delete a setting	DELETE
+
+🔐 Permissions (update permissions.json)
+All endpoints must be protected using existing permission system.
+
+Add these permissions under "Settings" group:
+
+settings.view
+
+settings.create
+
+settings.update
+
+settings.delete
+
+✅ Remove all dummy permissions from permissions.json.
+
+🧪 Postman Collection
+Update postman_collection.json under resources/ folder:
+
+Create a Settings folder
+
+Add all 5 endpoints above with appropriate request examples
+
+Include pre-filled input values of all types (html, string, json, boolean, etc.)
+
+Each request should have description, headers, body (raw JSON), and example responses
+
+All requests should use existing bearer token header format
+
+📝 README.md (Documentation)
+Update the README.md file to include:
+
+Purpose of Settings Module
+
+Sample cURL or Postman usage for each endpoint
+
+Field descriptions (type, value, key, etc.)
+
+Permissions required for each endpoint
+
+Notes on extensibility: support for new types (like html, json, css, etc.)
+
+🚦 Additional Notes:
+Use consistent response wrapper and error format as used in existing modules
+
+Use Spring Data JPA + DTO pattern
+
+Validations must include:
+
+key required and unique
+
+type should be one of allowed types
+
+Pagination + search by key/type in listing endpoint
+
+Sortable by createdAt, key
+
+🔁 Final Deliverables:
+
+Full Spring Boot module (Entity, Repository, Service, Controller, DTOs, Exception handling)
+
+Updated permissions.json (cleaned and final)
+
+Updated postman_collection.json (under resources)
+
+Updated README.md with endpoint details
