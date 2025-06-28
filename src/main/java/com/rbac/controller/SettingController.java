@@ -1,7 +1,6 @@
 
 package com.rbac.controller;
 
-import com.rbac.dto.common.ApiResponse;
 import com.rbac.dto.setting.CreateSettingRequest;
 import com.rbac.dto.setting.SettingDto;
 import com.rbac.dto.setting.UpdateSettingRequest;
@@ -36,11 +35,11 @@ public class SettingController {
     @PreAuthorize("hasAuthority('settings.view')")
     @Operation(summary = "Get paginated list of settings", description = "Retrieve settings with optional filters by key and type")
     @ApiResponses(value = {
-            @SwaggerApiResponse(responseCode = "200", description = "Settings retrieved successfully"),
-            @SwaggerApiResponse(responseCode = "403", description = "Access denied - insufficient permissions"),
-            @SwaggerApiResponse(responseCode = "500", description = "Internal server error")
+            @ApiResponse(responseCode = "200", description = "Settings retrieved successfully"),
+            @ApiResponse(responseCode = "403", description = "Access denied - insufficient permissions"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    public ResponseEntity<ApiResponse<Map<String, Object>>> getAllSettings(
+    public ResponseEntity<com.rbac.dto.common.ApiResponse<Map<String, Object>>> getAllSettings(
             @Parameter(description = "Page number (0-based)", example = "0")
             @RequestParam(value = "page", defaultValue = "0") int page,
             
@@ -59,7 +58,7 @@ public class SettingController {
             @Parameter(description = "Filter by type")
             @RequestParam(value = "type", required = false) String type) {
         
-        ApiResponse<Map<String, Object>> response = settingService.getAllSettings(
+        com.rbac.dto.common.ApiResponse<Map<String, Object>> response = settingService.getAllSettings(
                 page, size, sortBy, sortDirection, key, type);
         
         return response.isSuccess() ? 
@@ -71,15 +70,15 @@ public class SettingController {
     @PreAuthorize("hasAuthority('settings.view')")
     @Operation(summary = "Get setting by ID", description = "Retrieve a specific setting by its ID")
     @ApiResponses(value = {
-            @SwaggerApiResponse(responseCode = "200", description = "Setting retrieved successfully"),
-            @SwaggerApiResponse(responseCode = "404", description = "Setting not found"),
-            @SwaggerApiResponse(responseCode = "403", description = "Access denied - insufficient permissions")
+            @ApiResponse(responseCode = "200", description = "Setting retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "Setting not found"),
+            @ApiResponse(responseCode = "403", description = "Access denied - insufficient permissions")
     })
-    public ResponseEntity<ApiResponse<SettingDto>> getSettingById(
+    public ResponseEntity<com.rbac.dto.common.ApiResponse<SettingDto>> getSettingById(
             @Parameter(description = "Setting ID", example = "1")
             @PathVariable Long id) {
         
-        ApiResponse<SettingDto> response = settingService.getSettingById(id);
+        com.rbac.dto.common.ApiResponse<SettingDto> response = settingService.getSettingById(id);
         
         return response.isSuccess() ? 
                 ResponseEntity.ok(response) : 
@@ -90,15 +89,15 @@ public class SettingController {
     @PreAuthorize("hasAuthority('settings.view')")
     @Operation(summary = "Get setting by key", description = "Retrieve a specific setting by its key")
     @ApiResponses(value = {
-            @SwaggerApiResponse(responseCode = "200", description = "Setting retrieved successfully"),
-            @SwaggerApiResponse(responseCode = "404", description = "Setting not found"),
-            @SwaggerApiResponse(responseCode = "403", description = "Access denied - insufficient permissions")
+            @ApiResponse(responseCode = "200", description = "Setting retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "Setting not found"),
+            @ApiResponse(responseCode = "403", description = "Access denied - insufficient permissions")
     })
-    public ResponseEntity<ApiResponse<SettingDto>> getSettingByKey(
+    public ResponseEntity<com.rbac.dto.common.ApiResponse<SettingDto>> getSettingByKey(
             @Parameter(description = "Setting key", example = "store_name")
             @PathVariable String key) {
         
-        ApiResponse<SettingDto> response = settingService.getSettingByKey(key);
+        com.rbac.dto.common.ApiResponse<SettingDto> response = settingService.getSettingByKey(key);
         
         return response.isSuccess() ? 
                 ResponseEntity.ok(response) : 
@@ -109,15 +108,15 @@ public class SettingController {
     @PreAuthorize("hasAuthority('settings.create')")
     @Operation(summary = "Create new setting", description = "Create a new application setting")
     @ApiResponses(value = {
-            @SwaggerApiResponse(responseCode = "201", description = "Setting created successfully"),
-            @SwaggerApiResponse(responseCode = "400", description = "Invalid input or setting already exists"),
-            @SwaggerApiResponse(responseCode = "403", description = "Access denied - insufficient permissions")
+            @ApiResponse(responseCode = "201", description = "Setting created successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input or setting already exists"),
+            @ApiResponse(responseCode = "403", description = "Access denied - insufficient permissions")
     })
-    public ResponseEntity<ApiResponse<SettingDto>> createSetting(
+    public ResponseEntity<com.rbac.dto.common.ApiResponse<SettingDto>> createSetting(
             @Valid @RequestBody CreateSettingRequest request,
             @AuthenticationPrincipal UserPrincipal userPrincipal) {
         
-        ApiResponse<SettingDto> response = settingService.createSetting(request, userPrincipal.getUsername());
+        com.rbac.dto.common.ApiResponse<SettingDto> response = settingService.createSetting(request, userPrincipal.getUsername());
         
         return response.isSuccess() ? 
                 ResponseEntity.status(HttpStatus.CREATED).body(response) : 
@@ -128,18 +127,18 @@ public class SettingController {
     @PreAuthorize("hasAuthority('settings.update')")
     @Operation(summary = "Update setting", description = "Update an existing setting's value and/or type")
     @ApiResponses(value = {
-            @SwaggerApiResponse(responseCode = "200", description = "Setting updated successfully"),
-            @SwaggerApiResponse(responseCode = "404", description = "Setting not found"),
-            @SwaggerApiResponse(responseCode = "400", description = "Invalid input"),
-            @SwaggerApiResponse(responseCode = "403", description = "Access denied - insufficient permissions")
+            @ApiResponse(responseCode = "200", description = "Setting updated successfully"),
+            @ApiResponse(responseCode = "404", description = "Setting not found"),
+            @ApiResponse(responseCode = "400", description = "Invalid input"),
+            @ApiResponse(responseCode = "403", description = "Access denied - insufficient permissions")
     })
-    public ResponseEntity<ApiResponse<SettingDto>> updateSetting(
+    public ResponseEntity<com.rbac.dto.common.ApiResponse<SettingDto>> updateSetting(
             @Parameter(description = "Setting ID", example = "1")
             @PathVariable Long id,
             @Valid @RequestBody UpdateSettingRequest request,
             @AuthenticationPrincipal UserPrincipal userPrincipal) {
         
-        ApiResponse<SettingDto> response = settingService.updateSetting(id, request, userPrincipal.getUsername());
+        com.rbac.dto.common.ApiResponse<SettingDto> response = settingService.updateSetting(id, request, userPrincipal.getUsername());
         
         return response.isSuccess() ? 
                 ResponseEntity.ok(response) : 
@@ -150,15 +149,15 @@ public class SettingController {
     @PreAuthorize("hasAuthority('settings.delete')")
     @Operation(summary = "Delete setting", description = "Delete an existing setting")
     @ApiResponses(value = {
-            @SwaggerApiResponse(responseCode = "200", description = "Setting deleted successfully"),
-            @SwaggerApiResponse(responseCode = "404", description = "Setting not found"),
-            @SwaggerApiResponse(responseCode = "403", description = "Access denied - insufficient permissions")
+            @ApiResponse(responseCode = "200", description = "Setting deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Setting not found"),
+            @ApiResponse(responseCode = "403", description = "Access denied - insufficient permissions")
     })
-    public ResponseEntity<ApiResponse<Void>> deleteSetting(
+    public ResponseEntity<com.rbac.dto.common.ApiResponse<Void>> deleteSetting(
             @Parameter(description = "Setting ID", example = "1")
             @PathVariable Long id) {
         
-        ApiResponse<Void> response = settingService.deleteSetting(id);
+        com.rbac.dto.common.ApiResponse<Void> response = settingService.deleteSetting(id);
         
         return response.isSuccess() ? 
                 ResponseEntity.ok(response) : 
