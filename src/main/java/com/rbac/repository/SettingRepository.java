@@ -19,8 +19,8 @@ public interface SettingRepository extends JpaRepository<Setting, Long> {
     boolean existsByKey(String key);
     
     @Query("SELECT s FROM Setting s WHERE " +
-           "(:key IS NULL OR LOWER(s.key) LIKE LOWER(CONCAT('%', :key, '%'))) AND " +
-           "(:type IS NULL OR LOWER(s.type) = LOWER(:type))")
+           "(:key IS NULL OR :key = '' OR LOWER(s.key) LIKE LOWER(CONCAT('%', :key, '%'))) AND " +
+           "(:type IS NULL OR :type = '' OR LOWER(s.type) = LOWER(:type))")
     Page<Setting> findWithFilters(@Param("key") String key, 
                                  @Param("type") String type, 
                                  Pageable pageable);
