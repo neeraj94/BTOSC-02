@@ -1,0 +1,2360 @@
+{
+  "info": {
+    "_postman_id": "7c72d66f-24d7-4ea5-a0d9-a828b0244c73",
+    "name": "Role and Permission Management System - Complete Collection",
+    "description": "Comprehensive API collection for RBAC system with user management, role assignment, and permission control. Includes all endpoints with examples.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "13926033",
+    "_collection_link": "https://jknew-team.postman.co/workspace/JK_NEW~0a80d411-bd5c-436a-9ffa-02432707d28a/collection/13926033-7c72d66f-24d7-4ea5-a0d9-a828b0244c73?action=share&source=collection_link&creator=13926033"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    pm.environment.set('authToken', response.data.accessToken);",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"superadmin\",\n    \"password\": \"SuperAdmin@123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/signin",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "signin"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Login",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"username\": \"superadmin\",\n    \"password\": \"SuperAdmin@123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/auth/signin",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "signin"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Login successful\",\n    \"data\": {\n        \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n        \"type\": \"Bearer\",\n        \"id\": 1,\n        \"username\": \"superadmin\",\n        \"email\": \"superadmin@example.com\",\n        \"firstName\": \"Super\",\n        \"lastName\": \"Admin\",\n        \"roles\": [\"SUPER_ADMIN\"],\n        \"permissions\": [\"user.create\", \"user.read\", \"user.update\", \"user.delete\", \"role.create\"],\n        \"dashboardModules\": [\"User Management\", \"Role Management\", \"Dashboard\"],\n        \"dashboardModulesWithPermissions\": {\n            \"User Management\": [\"user.create\", \"user.read\", \"user.update\", \"user.delete\"],\n            \"Role Management\": [\"role.create\", \"role.read\", \"role.update\", \"role.delete\"],\n            \"Dashboard\": [\"dashboard.view\", \"dashboard.admin\"]\n        }\n    }\n}"
+            },
+            {
+              "name": "Invalid Credentials",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"username\": \"invalid\",\n    \"password\": \"wrong\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/auth/signin",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "signin"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": false,\n    \"message\": \"Invalid username or password\",\n    \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "Verify Email",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/verify-email?token={{verificationToken}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "verify-email"
+              ],
+              "query": [
+                {
+                  "key": "token",
+                  "value": "{{verificationToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Email Verified Successfully",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/auth/verify-email?token=valid-token-123",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "verify-email"
+                  ],
+                  "query": [
+                    {
+                      "key": "token",
+                      "value": "valid-token-123"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Email verified successfully\",\n    \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/forgot-password?email=user@example.com",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "forgot-password"
+              ],
+              "query": [
+                {
+                  "key": "email",
+                  "value": "user@example.com"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Password Reset Email Sent",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/auth/forgot-password?email=user@example.com",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "forgot-password"
+                  ],
+                  "query": [
+                    {
+                      "key": "email",
+                      "value": "user@example.com"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Password reset email sent successfully\",\n    \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/reset-password?token={{resetToken}}&newPassword=NewPassword123",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "reset-password"
+              ],
+              "query": [
+                {
+                  "key": "token",
+                  "value": "{{resetToken}}"
+                },
+                {
+                  "key": "newPassword",
+                  "value": "NewPassword123"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Password Reset Successfully",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/auth/reset-password?token=reset-token-123&newPassword=NewPassword123",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "reset-password"
+                  ],
+                  "query": [
+                    {
+                      "key": "token",
+                      "value": "reset-token-123"
+                    },
+                    {
+                      "key": "newPassword",
+                      "value": "NewPassword123"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Password reset successfully\",\n    \"data\": null\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "User Management",
+      "item": [
+        {
+          "name": "Create User",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"testuser\",\n    \"email\": \"testuser@example.com\",\n    \"password\": \"Password123\",\n    \"firstName\": \"Test\",\n    \"lastName\": \"User\",\n    \"roleIds\": [2],\n    \"isActive\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "User Created Successfully",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"username\": \"testuser\",\n    \"email\": \"testuser@example.com\",\n    \"password\": \"Password123\",\n    \"firstName\": \"Test\",\n    \"lastName\": \"User\",\n    \"roleIds\": [2],\n    \"isActive\": true\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/users",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "users"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"User created successfully\",\n    \"data\": {\n        \"id\": 3,\n        \"username\": \"testuser\",\n        \"email\": \"testuser@example.com\",\n        \"firstName\": \"Test\",\n        \"lastName\": \"User\",\n        \"emailVerified\": false,\n        \"isActive\": true,\n        \"createdAt\": \"2024-01-01T10:00:00Z\",\n        \"updatedAt\": \"2024-01-01T10:00:00Z\",\n        \"roles\": [\n            {\n                \"id\": 2,\n                \"name\": \"ADMIN\",\n                \"description\": \"Administrator role\"\n            }\n        ]\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get All Users",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users?page=0&size=20&sortBy=id&sortDir=asc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "id"
+                },
+                {
+                  "key": "sortDir",
+                  "value": "asc"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Get All Users Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/users?page=0&size=20&sortBy=id&sortDir=asc",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "users"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "20"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "id"
+                    },
+                    {
+                      "key": "sortDir",
+                      "value": "asc"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Users retrieved successfully\",\n    \"data\": {\n        \"content\": [\n            {\n                \"id\": 1,\n                \"username\": \"superadmin\",\n                \"email\": \"superadmin@example.com\",\n                \"firstName\": \"Super\",\n                \"lastName\": \"Admin\",\n                \"emailVerified\": true,\n                \"isActive\": true,\n                \"createdAt\": \"2024-01-01T00:00:00Z\",\n                \"updatedAt\": \"2024-01-01T00:00:00Z\",\n                \"roles\": [\n                    {\n                        \"id\": 1,\n                        \"name\": \"SUPER_ADMIN\",\n                        \"description\": \"Super Administrator with full access\"\n                    }\n                ]\n            }\n        ],\n        \"totalElements\": 1,\n        \"totalPages\": 1,\n        \"size\": 20,\n        \"number\": 0\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get User by ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/{{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "{{userId}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Get User by ID Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/users/1",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "users",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"User retrieved successfully\",\n    \"data\": {\n        \"id\": 1,\n        \"username\": \"superadmin\",\n        \"email\": \"superadmin@example.com\",\n        \"firstName\": \"Super\",\n        \"lastName\": \"Admin\",\n        \"emailVerified\": true,\n        \"isActive\": true,\n        \"createdAt\": \"2024-01-01T00:00:00Z\",\n        \"updatedAt\": \"2024-01-01T00:00:00Z\",\n        \"roles\": [\n            {\n                \"id\": 1,\n                \"name\": \"SUPER_ADMIN\",\n                \"description\": \"Super Administrator with full access\"\n            }\n        ]\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"firstName\": \"Updated\",\n    \"lastName\": \"User\",\n    \"roleIds\": [2]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/{{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "{{userId}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Update User Success",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"firstName\": \"Updated\",\n    \"lastName\": \"User\",\n    \"roleIds\": [2]\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/users/3",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "users",
+                    "3"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"User updated successfully\",\n    \"data\": {\n        \"id\": 3,\n        \"username\": \"testuser\",\n        \"email\": \"testuser@example.com\",\n        \"firstName\": \"Updated\",\n        \"lastName\": \"User\",\n        \"emailVerified\": false,\n        \"isActive\": true,\n        \"createdAt\": \"2024-01-01T10:00:00Z\",\n        \"updatedAt\": \"2024-01-01T10:30:00Z\",\n        \"roles\": [\n            {\n                \"id\": 2,\n                \"name\": \"ADMIN\",\n                \"description\": \"Administrator role\"\n            }\n        ]\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Toggle User Activation",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/{{userId}}/toggle-activation",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "{{userId}}",
+                "toggle-activation"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Toggle User Activation Success",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/users/3/toggle-activation",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "users",
+                    "3",
+                    "toggle-activation"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"User activation status updated successfully\",\n    \"data\": {\n        \"id\": 3,\n        \"username\": \"testuser\",\n        \"email\": \"testuser@example.com\",\n        \"firstName\": \"Updated\",\n        \"lastName\": \"User\",\n        \"emailVerified\": false,\n        \"isActive\": false,\n        \"createdAt\": \"2024-01-01T10:00:00Z\",\n        \"updatedAt\": \"2024-01-01T10:45:00Z\",\n        \"roles\": [\n            {\n                \"id\": 2,\n                \"name\": \"ADMIN\",\n                \"description\": \"Administrator role\"\n            }\n        ]\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/{{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "{{userId}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Delete User Success",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/users/3",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "users",
+                    "3"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"User deleted successfully\",\n    \"data\": null\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Role Management",
+      "item": [
+        {
+          "name": "Create Role",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Manager\",\n    \"description\": \"Manager role with specific permissions\",\n    \"permissionIds\": [1, 2, 7, 8, 15, 16]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/roles",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "roles"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Create Role Success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"name\": \"Manager\",\n    \"description\": \"Manager role with specific permissions\",\n    \"permissionIds\": [1, 2, 7, 8, 15, 16]\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/roles",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "roles"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Role created successfully\",\n    \"data\": {\n        \"id\": 4,\n        \"name\": \"Manager\",\n        \"description\": \"Manager role with specific permissions\",\n        \"isSystemRole\": false,\n        \"createdAt\": \"2024-01-01T11:00:00Z\",\n        \"updatedAt\": \"2024-01-01T11:00:00Z\",\n        \"permissions\": [\n            {\n                \"id\": 1,\n                \"permissionKey\": \"user.create\",\n                \"name\": \"Create User\",\n                \"description\": \"Allows creation of new users\",\n                \"module\": \"User Management\"\n            },\n            {\n                \"id\": 2,\n                \"permissionKey\": \"user.read\",\n                \"name\": \"View Users\",\n                \"description\": \"Allows viewing user information\",\n                \"module\": \"User Management\"\n            }\n        ]\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get All Roles",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/roles?page=0&size=20&sortBy=id&sortDir=asc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "roles"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "id"
+                },
+                {
+                  "key": "sortDir",
+                  "value": "asc"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Get All Roles Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/roles?page=0&size=20&sortBy=id&sortDir=asc",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "roles"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "20"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "id"
+                    },
+                    {
+                      "key": "sortDir",
+                      "value": "asc"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Roles retrieved successfully\",\n    \"data\": {\n        \"content\": [\n            {\n                \"id\": 1,\n                \"name\": \"SUPER_ADMIN\",\n                \"description\": \"Super Administrator with full access\",\n                \"isSystemRole\": true,\n                \"createdAt\": \"2024-01-01T00:00:00Z\",\n                \"updatedAt\": \"2024-01-01T00:00:00Z\",\n                \"permissions\": []\n            },\n            {\n                \"id\": 2,\n                \"name\": \"ADMIN\",\n                \"description\": \"Administrator role\",\n                \"isSystemRole\": true,\n                \"createdAt\": \"2024-01-01T00:00:00Z\",\n                \"updatedAt\": \"2024-01-01T00:00:00Z\",\n                \"permissions\": []\n            }\n        ],\n        \"totalElements\": 2,\n        \"totalPages\": 1,\n        \"size\": 20,\n        \"number\": 0\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Role by ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/roles/{{roleId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "roles",
+                "{{roleId}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Get Role by ID Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/roles/1",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "roles",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Role retrieved successfully\",\n    \"data\": {\n        \"id\": 1,\n        \"name\": \"SUPER_ADMIN\",\n        \"description\": \"Super Administrator with full access\",\n        \"isSystemRole\": true,\n        \"createdAt\": \"2024-01-01T00:00:00Z\",\n        \"updatedAt\": \"2024-01-01T00:00:00Z\",\n        \"permissions\": [\n            {\n                \"id\": 1,\n                \"permissionKey\": \"user.create\",\n                \"name\": \"Create User\",\n                \"description\": \"Allows creation of new users\",\n                \"module\": \"User Management\"\n            }\n        ]\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Role",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Senior Manager\",\n    \"description\": \"Senior manager role with extended permissions\",\n    \"permissionIds\": [1, 2, 3, 4, 7, 8, 9, 10]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/roles/{{roleId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "roles",
+                "{{roleId}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Update Role Success",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"name\": \"Senior Manager\",\n    \"description\": \"Senior manager role with extended permissions\",\n    \"permissionIds\": [1, 2, 3, 4, 7, 8, 9, 10]\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/roles/4",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "roles",
+                    "4"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Role updated successfully\",\n    \"data\": {\n        \"id\": 4,\n        \"name\": \"Senior Manager\",\n        \"description\": \"Senior manager role with extended permissions\",\n        \"isSystemRole\": false,\n        \"createdAt\": \"2024-01-01T11:00:00Z\",\n        \"updatedAt\": \"2024-01-01T11:30:00Z\",\n        \"permissions\": [\n            {\n                \"id\": 1,\n                \"permissionKey\": \"user.create\",\n                \"name\": \"Create User\",\n                \"description\": \"Allows creation of new users\",\n                \"module\": \"User Management\"\n            }\n        ]\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Delete Role",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/roles/{{roleId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "roles",
+                "{{roleId}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Delete Role Success",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/roles/4",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "roles",
+                    "4"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Role deleted successfully\",\n    \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Non-System Roles",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/roles/non-system",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "roles",
+                "non-system"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Get Non-System Roles Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/roles/non-system",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "roles",
+                    "non-system"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Non-system roles retrieved successfully\",\n    \"data\": [\n        {\n            \"id\": 4,\n            \"name\": \"Manager\",\n            \"description\": \"Manager role with specific permissions\",\n            \"isSystemRole\": false,\n            \"createdAt\": \"2024-01-01T11:00:00Z\",\n            \"updatedAt\": \"2024-01-01T11:00:00Z\",\n            \"permissions\": []\n        }\n    ]\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Permission Management",
+      "item": [
+        {
+          "name": "Get All Permissions",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/permissions?page=0&size=20&sortBy=module&sortDir=asc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "permissions"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "module"
+                },
+                {
+                  "key": "sortDir",
+                  "value": "asc"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Get All Permissions Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/permissions?page=0&size=20&sortBy=module&sortDir=asc",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "permissions"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "20"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "module"
+                    },
+                    {
+                      "key": "sortDir",
+                      "value": "asc"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Permissions retrieved successfully\",\n    \"data\": {\n        \"content\": [\n            {\n                \"id\": 1,\n                \"permissionKey\": \"user.create\",\n                \"name\": \"Create User\",\n                \"description\": \"Allows creation of new users\",\n                \"module\": \"User Management\"\n            },\n            {\n                \"id\": 2,\n                \"permissionKey\": \"user.read\",\n                \"name\": \"View Users\",\n                \"description\": \"Allows viewing user information\",\n                \"module\": \"User Management\"\n            }\n        ],\n        \"totalElements\": 25,\n        \"totalPages\": 2,\n        \"size\": 20,\n        \"number\": 0\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Permission Modules",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/permissions/modules",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "permissions",
+                "modules"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Get Permission Modules Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/permissions/modules",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "permissions",
+                    "modules"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Permission modules retrieved successfully\",\n    \"data\": [\n        \"User Management\",\n        \"Role Management\",\n        \"Dashboard\",\n        \"Contract Management\",\n        \"Communication\",\n        \"System Administration\",\n        \"Analytics\",\n        \"Finance\",\n        \"Inventory Management\",\n        \"Customer Support\",\n        \"Integration Management\",\n        \"API Management\"\n    ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Permissions Grouped by Module",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/permissions/grouped",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "permissions",
+                "grouped"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Get Permissions Grouped Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/permissions/grouped",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "permissions",
+                    "grouped"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Permissions grouped by module retrieved successfully\",\n    \"data\": {\n        \"User Management\": [\n            {\n                \"id\": 1,\n                \"permissionKey\": \"user.create\",\n                \"name\": \"Create User\",\n                \"description\": \"Allows creation of new users\",\n                \"module\": \"User Management\"\n            },\n            {\n                \"id\": 2,\n                \"permissionKey\": \"user.read\",\n                \"name\": \"View Users\",\n                \"description\": \"Allows viewing user information\",\n                \"module\": \"User Management\"\n            }\n        ],\n        \"Role Management\": [\n            {\n                \"id\": 7,\n                \"permissionKey\": \"role.create\",\n                \"name\": \"Create Role\",\n                \"description\": \"Allows creation of new roles\",\n                \"module\": \"Role Management\"\n            }\n        ]\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get User Effective Permissions",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/permissions/user/{{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "permissions",
+                "user",
+                "{{userId}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Get User Effective Permissions Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/permissions/user/1",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "permissions",
+                    "user",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"User effective permissions retrieved successfully\",\n    \"data\": {\n        \"userId\": 1,\n        \"username\": \"superadmin\",\n        \"rolePermissions\": [\n            {\n                \"id\": 1,\n                \"permissionKey\": \"user.create\",\n                \"name\": \"Create User\",\n                \"description\": \"Allows creation of new users\",\n                \"module\": \"User Management\"\n            }\n        ],\n        \"grantedOverrides\": [],\n        \"deniedOverrides\": [],\n        \"effectivePermissions\": [\n            {\n                \"id\": 1,\n                \"permissionKey\": \"user.create\",\n                \"name\": \"Create User\",\n                \"description\": \"Allows creation of new users\",\n                \"module\": \"User Management\"\n            }\n        ]\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get User Permission Overrides",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/permissions/user/{{userId}}/overrides",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "permissions",
+                "user",
+                "{{userId}}",
+                "overrides"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Get User Permission Overrides Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/permissions/user/1/overrides",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "permissions",
+                    "user",
+                    "1",
+                    "overrides"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"User permission overrides retrieved successfully\",\n    \"data\": [\n        {\n            \"id\": 1,\n            \"userId\": 1,\n            \"permissionId\": 5,\n            \"overrideType\": \"GRANT\",\n            \"createdAt\": \"2024-01-01T12:00:00Z\",\n            \"permission\": {\n                \"id\": 5,\n                \"permissionKey\": \"user.export\",\n                \"name\": \"Export Users\",\n                \"description\": \"Allows exporting user data\",\n                \"module\": \"User Management\"\n            }\n        }\n    ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Set User Permission Overrides",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[\n    {\n        \"permissionId\": 5,\n        \"overrideType\": \"GRANT\"\n    },\n    {\n        \"permissionId\": 6,\n        \"overrideType\": \"DENY\"\n    }\n]"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/permissions/user/overrides?userId={{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "permissions",
+                "user",
+                "overrides"
+              ],
+              "query": [
+                {
+                  "key": "userId",
+                  "value": "{{userId}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Set User Permission Overrides Success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n    {\n        \"permissionId\": 5,\n        \"overrideType\": \"GRANT\"\n    },\n    {\n        \"permissionId\": 6,\n        \"overrideType\": \"DENY\"\n    }\n]"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/permissions/user/overrides?userId=1",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "permissions",
+                    "user",
+                    "overrides"
+                  ],
+                  "query": [
+                    {
+                      "key": "userId",
+                      "value": "1"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"User permission overrides set successfully\",\n    \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "Add User Permission Overrides",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[\n    {\n        \"permissionId\": 7,\n        \"overrideType\": \"GRANT\"\n    },\n    {\n        \"permissionId\": 8,\n        \"overrideType\": \"DENY\"\n    }\n]"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/permissions/user/overrides/add?userId={{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "permissions",
+                "user",
+                "overrides",
+                "add"
+              ],
+              "query": [
+                {
+                  "key": "userId",
+                  "value": "{{userId}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Add User Permission Overrides Success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n    {\n        \"permissionId\": 7,\n        \"overrideType\": \"GRANT\"\n    },\n    {\n        \"permissionId\": 8,\n        \"overrideType\": \"DENY\"\n    }\n]"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/permissions/user/overrides/add?userId=1",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "permissions",
+                    "user",
+                    "overrides",
+                    "add"
+                  ],
+                  "query": [
+                    {
+                      "key": "userId",
+                      "value": "1"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"User permission overrides added successfully\",\n    \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "Check User Permission",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/permissions/check/{{userId}}/user.create",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "permissions",
+                "check",
+                "{{userId}}",
+                "user.create"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Check User Permission - Has Permission",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/permissions/check/1/user.create",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "permissions",
+                    "check",
+                    "1",
+                    "user.create"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Permission check completed\",\n    \"data\": {\n        \"hasPermission\": true,\n        \"permissionKey\": \"user.create\",\n        \"userId\": 1,\n        \"source\": \"ROLE\"\n    }\n}"
+            },
+            {
+              "name": "Check User Permission - No Permission",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/permissions/check/1/admin.delete",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "permissions",
+                    "check",
+                    "1",
+                    "admin.delete"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Permission check completed\",\n    \"data\": {\n        \"hasPermission\": false,\n        \"permissionKey\": \"admin.delete\",\n        \"userId\": 1,\n        \"source\": null\n    }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Export",
+      "item": [
+        {
+          "name": "Export Users to Excel",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/export/users/excel",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "export",
+                "users",
+                "excel"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Export Users to Excel Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/export/users/excel",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "export",
+                    "users",
+                    "excel"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                },
+                {
+                  "key": "Content-Disposition",
+                  "value": "attachment; filename=users.xlsx"
+                }
+              ],
+              "cookie": [],
+              "body": "[Binary Excel File Content]"
+            }
+          ]
+        },
+        {
+          "name": "Export Users to CSV",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/export/users/csv",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "export",
+                "users",
+                "csv"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Export Users to CSV Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/export/users/csv",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "export",
+                    "users",
+                    "csv"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/csv"
+                },
+                {
+                  "key": "Content-Disposition",
+                  "value": "attachment; filename=users.csv"
+                }
+              ],
+              "cookie": [],
+              "body": "ID,Username,Email,First Name,Last Name,Email Verified,Is Active,Created At,Updated At,Roles\n1,superadmin,superadmin@example.com,Super,Admin,true,true,2024-01-01T00:00:00Z,2024-01-01T00:00:00Z,SUPER_ADMIN\n2,admin,admin@example.com,Admin,User,true,true,2024-01-01T00:00:00Z,2024-01-01T00:00:00Z,ADMIN"
+            }
+          ]
+        },
+        {
+          "name": "Export Roles to Excel",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/export/roles/excel",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "export",
+                "roles",
+                "excel"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Export Roles to Excel Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/export/roles/excel",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "export",
+                    "roles",
+                    "excel"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                },
+                {
+                  "key": "Content-Disposition",
+                  "value": "attachment; filename=roles.xlsx"
+                }
+              ],
+              "cookie": [],
+              "body": "[Binary Excel File Content]"
+            }
+          ]
+        },
+        {
+          "name": "Export Roles to CSV",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/export/roles/csv",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "export",
+                "roles",
+                "csv"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Export Roles to CSV Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/export/roles/csv",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "export",
+                    "roles",
+                    "csv"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/csv"
+                },
+                {
+                  "key": "Content-Disposition",
+                  "value": "attachment; filename=roles.csv"
+                }
+              ],
+              "cookie": [],
+              "body": "ID,Name,Description,Is System Role,Created At,Updated At,Permissions\n1,SUPER_ADMIN,Super Administrator with full access,true,2024-01-01T00:00:00Z,2024-01-01T00:00:00Z,ALL\n2,ADMIN,Administrator role,true,2024-01-01T00:00:00Z,2024-01-01T00:00:00Z,user.create;user.read;user.update"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Settings Management",
+      "item": [
+        {
+          "name": "Get All Settings",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/settings?page=0&size=10&sortBy=createdAt&sortDirection=desc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "settings"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "createdAt"
+                },
+                {
+                  "key": "sortDirection",
+                  "value": "desc"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Setting by ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/settings/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "settings",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Setting by Key",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/settings/store_name/view",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "settings",
+                "store_name",
+                "view"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Setting",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"key\": \"store_name\",\n    \"value\": \"My Amazing Store\",\n    \"type\": \"string\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/settings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "settings"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Setting",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"value\": \"Updated Store Name\",\n    \"type\": \"string\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/settings/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "settings",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Setting",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/settings/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "settings",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Auto-set auth token from login response",
+          "if (pm.response && pm.response.json() && pm.response.json().data && pm.response.json().data.token) {",
+          "    pm.collectionVariables.set('authToken', pm.response.json().data.token);",
+          "}"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Auto-extract token from login response",
+          "if (pm.request.url.path.includes('signin') && pm.response.code === 200) {",
+          "    const responseJson = pm.response.json();",
+          "    if (responseJson.data && responseJson.data.token) {",
+          "        pm.collectionVariables.set('authToken', responseJson.data.token);",
+          "        console.log('Auth token automatically set from login response');",
+          "    }",
+          "}",
+          "",
+          "// Basic response validation",
+          "pm.test('Response has success field', function () {",
+          "    const responseJson = pm.response.json();",
+          "    pm.expect(responseJson).to.have.property('success');",
+          "});",
+          "",
+          "pm.test('Response has message field', function () {",
+          "    const responseJson = pm.response.json();",
+          "    pm.expect(responseJson).to.have.property('message');",
+          "});"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "userId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "roleId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "verificationToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "resetToken",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
